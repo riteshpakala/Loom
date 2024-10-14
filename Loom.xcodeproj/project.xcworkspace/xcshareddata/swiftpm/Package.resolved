@@ -1,0 +1,122 @@
+{
+  "pins" : [
+    {
+      "identity" : "feedkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/FeedKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "f216bcf2a76f63b11ecf98e7021120f2fa395cbb"
+      }
+    },
+    {
+      "identity" : "ffmpegkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/FFmpegKit.git",
+      "state" : {
+        "revision" : "89f71ccee33d1ff402201162f28b6400f349c873",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "highlightr",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/raspu/Highlightr.git",
+      "state" : {
+        "revision" : "fa483d37c692961ecc2391eac568ba3d3935e663",
+        "version" : "2.2.0"
+      }
+    },
+    {
+      "identity" : "ipfskit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/ipfskit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "757e86c5d468635ab88e30d3bfb896a27ec34618"
+      }
+    },
+    {
+      "identity" : "keyboardtoolbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/KeyboardToolbar",
+      "state" : {
+        "branch" : "main",
+        "revision" : "77292529fc436541c5d31664d263460778060210"
+      }
+    },
+    {
+      "identity" : "lemmykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/LemmyKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "9f1087095b2fe2944b5cdd30e37ab55e3c9bc5e6"
+      }
+    },
+    {
+      "identity" : "marblekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/MarbleKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "129a6f8adbbf568133b0fc98afe60f271ca10cec"
+      }
+    },
+    {
+      "identity" : "markdownview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/MarkdownView",
+      "state" : {
+        "branch" : "main",
+        "revision" : "541741eb819c4ce404390afb5120ba082c1e4187"
+      }
+    },
+    {
+      "identity" : "mastodonkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/MastodonKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "b21dfbf6ae4c510d440d069b02bc9b07e627ed95"
+      }
+    },
+    {
+      "identity" : "moderationkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/ModerationKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7977c79c74755ec47ae268850387a69abf9ab131"
+      }
+    },
+    {
+      "identity" : "nuke",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kean/Nuke",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a426cc798ec811250cf73e11349a367c59991c54"
+      }
+    },
+    {
+      "identity" : "swift-cmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-cmark.git",
+      "state" : {
+        "revision" : "3bc2f3e25df0cecc5dc269f7ccae65d0f386f06a",
+        "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "swift-markdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-markdown.git",
+      "state" : {
+        "revision" : "4aae40bf6fff5286e0e1672329d17824ce16e081",
+        "version" : "0.4.0"
+      }
+    }
+  ],
+  "version" : 2
+}
