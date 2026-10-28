@@ -60,6 +60,9 @@ struct TextToolView : GenericControllerRepresentable {
             }
         }
         uiViewController.placeholderLabel.isHidden = text.isNotEmpty
+        //Rebuilding the toolbar re-lays out the hosting view, and SwiftUI calls
+        //this again during layout; rebuild only when the visibility icon changes
+        guard uiViewController.isVisible != visibility else { return }
         uiViewController.isVisible = visibility
         uiViewController.setupKeyboardTools()
     }

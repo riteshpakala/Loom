@@ -2,7 +2,6 @@ import Granite
 import GraniteUI
 import SwiftUI
 import Foundation
-import MarbleKit
 
 extension Settings: View {
     var aboutPageLinkString: String {

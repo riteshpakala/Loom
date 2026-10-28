@@ -1,7 +1,6 @@
 import Granite
 import SwiftUI
 import IPFSKit
-import MarbleKit
 import FederationKit
 
 extension ConfigService {
