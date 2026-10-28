@@ -3,9 +3,14 @@
 <h1 align="center">Loom (iOS & macOS)</h1>
 
 > [!IMPORTANT]
-> **This repository is a reference.** Loom is a social app architecture I built from scratch, and a pre-AI reference for design patterns in modern iOS applications built with [Granite](https://github.com/riteshpakala/Granite). The skill files (`SKILL.md`) in my projects point here when building applications.
+> **This repository is a reference.** Loom is a social app architecture I built from scratch, and a pre-AI reference for design patterns in modern iOS applications built with [Granite](https://github.com/riteshpakala/Granite). The skill files (`SKILL.md`) in my projects point here when building applications; the layout itself is written up as a skill in [`Skills/loom-app-architecture`](Skills/loom-app-architecture/SKILL.md).
 >
 > It is kept self-contained so it builds on its own, always: every package it depends on is vendored in [`Packages/`](Packages), except Granite and a few public libraries, which are pinned to exact revisions.
+
+<p align="center"><img src="Resources/README/loom-bloom.svg" width="100%" alt="A concentrated beam, Loom and Granite built solo, enters a reactor labelled Apple, Inc. and blooms into a spectrum: AI safety, social app safety, iOS architecture, on-device ML, core research, Rao Studios and 2026 Year in Review." /></p>
+
+> [!NOTE]
+> **The beam before the bloom.** Building Loom and Granite solo, design included, was the experience that focused my interests in iOS architecture, AI safety and social app safety, and sharpened CoreML, on-device ML, app architecture, iOS application performance, engineering, design and project management. Joining Apple, Inc. was the reactor: it exploded into [2026 Year in Review](https://riteshpakala.github.io/French-Visa-Application/), [Rao Studios](https://rao.nyc) and my [core research](https://paka.la/blog#core-research).
 
 <p align="center"><img src="Resources/README/header.gif" width="90%" /></p>
 
