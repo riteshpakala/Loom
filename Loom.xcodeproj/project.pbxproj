@@ -826,8 +826,6 @@
 		711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceCardView.swift; sourceTree = "<group>"; };
 		711D392E2A84A96200CF2DB2 /* DebugComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugComponent.swift; sourceTree = "<group>"; };
 		712427B72A65C4AA007F2F77 /* Bookmark._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark._.swift; sourceTree = "<group>"; };
-		7124EC642C976795002EA2C4 /* MarkdownView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MarkdownView; sourceTree = "<group>"; };
-		7124EC6A2C976A6D002EA2C4 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../Granite; sourceTree = "<group>"; };
 		71258D262A55F951007E52FC /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		712BEB5929074CFB00D257B7 /* CameraContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraContent.swift; sourceTree = "<group>"; };
 		712BEB5A29074CFB00D257B7 /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -1459,8 +1457,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				7124EC6A2C976A6D002EA2C4 /* Granite */,
-				7124EC642C976795002EA2C4 /* MarkdownView */,
 				71C147F82AA6F11600B18C70 /* Loom (iOS).entitlements */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
@@ -2777,10 +2773,12 @@
 			mainGroup = 711B3F6C2885D43700F3080D;
 			packageReferences = (
 				7124EC632C976795002EA2C4 /* XCLocalSwiftPackageReference "FederationKit" */,
+				7124EC622C976795002EA2C4 /* XCLocalSwiftPackageReference "MarkdownView" */,
+				7124EC612C976795002EA2C4 /* XCLocalSwiftPackageReference "ModerationKit" */,
+				7124EC602C976795002EA2C4 /* XCLocalSwiftPackageReference "ipfskit" */,
+				7124EC5F2C976795002EA2C4 /* XCRemoteSwiftPackageReference "Granite" */,
 				71C5FF6C2A646BE100F99A84 /* XCRemoteSwiftPackageReference "Nuke" */,
-				715797742A7B83A100B7FEC9 /* XCRemoteSwiftPackageReference "ipfskit" */,
 				71BE94F22A958DA8004A3AC3 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */,
-				71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */,
 			);
 			productRefGroup = 711B3F7A2885D43B00F3080D /* Products */;
 			projectDirPath = "";
@@ -4063,41 +4061,45 @@
 /* Begin XCLocalSwiftPackageReference section */
 		7124EC632C976795002EA2C4 /* XCLocalSwiftPackageReference "FederationKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = FederationKit;
+			relativePath = Packages/FederationKit;
+		};
+		7124EC602C976795002EA2C4 /* XCLocalSwiftPackageReference "ipfskit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ipfskit;
+		};
+		7124EC612C976795002EA2C4 /* XCLocalSwiftPackageReference "ModerationKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ModerationKit;
+		};
+		7124EC622C976795002EA2C4 /* XCLocalSwiftPackageReference "MarkdownView" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/MarkdownView;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		715797742A7B83A100B7FEC9 /* XCRemoteSwiftPackageReference "ipfskit" */ = {
+		7124EC5F2C976795002EA2C4 /* XCRemoteSwiftPackageReference "Granite" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pexavc/ipfskit";
+			repositoryURL = "https://github.com/riteshpakala/Granite";
 			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pexavc/ModerationKit";
-			requirement = {
-				branch = main;
-				kind = branch;
+				kind = revision;
+				revision = c67f491044e8ba87a29be5d5f0ec82b259e8303e;
 			};
 		};
 		71BE94F22A958DA8004A3AC3 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pexavc/KeyboardToolbar";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = revision;
+				revision = 77292529fc436541c5d31664d263460778060210;
 			};
 		};
 		71C5FF6C2A646BE100F99A84 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = revision;
+				revision = a426cc798ec811250cf73e11349a367c59991c54;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -4115,41 +4117,47 @@
 		};
 		7124EC6B2C976AC5002EA2C4 /* Granite */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 7124EC5F2C976795002EA2C4 /* XCRemoteSwiftPackageReference "Granite" */;
 			productName = Granite;
 		};
 		7124EC6F2C976ACB002EA2C4 /* GraniteUI */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 7124EC5F2C976795002EA2C4 /* XCRemoteSwiftPackageReference "Granite" */;
 			productName = GraniteUI;
 		};
 		7124EC712C976ACF002EA2C4 /* Granite */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 7124EC5F2C976795002EA2C4 /* XCRemoteSwiftPackageReference "Granite" */;
 			productName = Granite;
 		};
 		7124EC752C976AD4002EA2C4 /* GraniteUI */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 7124EC5F2C976795002EA2C4 /* XCRemoteSwiftPackageReference "Granite" */;
 			productName = GraniteUI;
 		};
 		712C0D732A7C46F600DBDCC9 /* MarkdownView */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 7124EC622C976795002EA2C4 /* XCLocalSwiftPackageReference "MarkdownView" */;
 			productName = MarkdownView;
 		};
 		715797752A7B83A100B7FEC9 /* IPFSKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 715797742A7B83A100B7FEC9 /* XCRemoteSwiftPackageReference "ipfskit" */;
+			package = 7124EC602C976795002EA2C4 /* XCLocalSwiftPackageReference "ipfskit" */;
 			productName = IPFSKit;
 		};
 		715797782A7B843100B7FEC9 /* MarkdownView */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 7124EC622C976795002EA2C4 /* XCLocalSwiftPackageReference "MarkdownView" */;
 			productName = MarkdownView;
 		};
 		71AAD3C42A9DB0D500D133F4 /* ModerationKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */;
+			package = 7124EC612C976795002EA2C4 /* XCLocalSwiftPackageReference "ModerationKit" */;
 			productName = ModerationKit;
 		};
 		71AAD3C62A9DB0E200D133F4 /* ModerationKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */;
+			package = 7124EC612C976795002EA2C4 /* XCLocalSwiftPackageReference "ModerationKit" */;
 			productName = ModerationKit;
 		};
 		71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */ = {
@@ -4199,10 +4207,12 @@
 		};
 		71CB6C2B2A6AF99400084ECC /* IPFSKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 7124EC602C976795002EA2C4 /* XCLocalSwiftPackageReference "ipfskit" */;
 			productName = IPFSKit;
 		};
 		71F0423C2A6A6BB100788CDC /* IPFSKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 7124EC602C976795002EA2C4 /* XCLocalSwiftPackageReference "ipfskit" */;
 			productName = IPFSKit;
 		};
 /* End XCSwiftPackageProductDependency section */

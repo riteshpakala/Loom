@@ -33,8 +33,8 @@ struct PEXApp: App {
     }
     
     var body: some Scene {
+        #if os(iOS)
         WindowGroup {
-            #if os(iOS)
             Home()
                 .onReceive(
                     NotificationCenter
@@ -52,15 +52,16 @@ struct PEXApp: App {
                                     .Meta(host: instanceURL.absoluteString))
                     }
                 }
-            #elseif os(macOS)
-            WindowComponent(backgroundColor: .background) {
-                Home()
-                    .background(Color.background)
-                    .task {
-                        config.center.boot.send()
-                    }
-            }
-            #endif
         }
+        #elseif os(macOS)
+        //WindowComponent is a Scene (it owns its WindowGroup)
+        WindowComponent(backgroundColor: .background) {
+            Home()
+                .background(Color.background)
+                .task {
+                    config.center.boot.send()
+                }
+        }
+        #endif
     }
 }

@@ -1,8 +1,11 @@
 <p align="center"><img src="Resources/README/logo.png" height="120px" /></p>
 
-<h1 align="center">Loom (iOS & macOS) Beta</h1>
+<h1 align="center">Loom (iOS & macOS)</h1>
 
-<p align="center"><a href="https://testflight.apple.com/join/owwIagmV">Testflight</a></p>
+> [!IMPORTANT]
+> **This repository is a reference.** Loom is a social app architecture I built from scratch, and a pre-AI reference for design patterns in modern iOS applications built with [Granite](https://github.com/riteshpakala/Granite). The skill files (`SKILL.md`) in my projects point here when building applications.
+>
+> It is kept self-contained so it builds on its own, always: every package it depends on is vendored in [`Packages/`](Packages), except Granite and a few public libraries, which are pinned to exact revisions.
 
 <p align="center"><img src="Resources/README/header.gif" width="90%" /></p>
 
@@ -13,11 +16,18 @@
 - If Loom requests for "Local Network Access" it is because a neighboring server is using a localhost equivalent address. It is not because of the application itself. So please DO NOT ALLOW ACCESS. (unless you are expecting it).
 
 ## Requirements
-![Swift Compatibility](https://img.shields.io/badge/Swift-5.9%20%7C%205.8%20%7C%205.7-orange?logo=swift)
-![Platform Compatibility](https://img.shields.io/badge/Platform-iOS%20%7C%20macOS-blue)
+![Swift Compatibility](https://img.shields.io/badge/Swift-6.4%20toolchain%20(Swift%205%20mode)-orange?logo=swift)
+![Platform Compatibility](https://img.shields.io/badge/Platform-iOS%2027%20%7C%20macOS%2027-blue)
 [![License](https://img.shields.io/badge/License-MIT--Clause-orange.svg)](https://opensource.org/license/mit/)
 
-> My local environment: Xcode 14.2 or later // macOS (Intel) 12.6 or later // iOS 15.4 or later
+> Last verified: Xcode 27.1 // macOS 27 // iOS 27 Simulator (2026-10-28)
+
+## Building
+
+Open `Loom.xcodeproj` and run the `Loom (iOS)` or `Loom (macOS)` scheme. No accounts, tokens or private repositories are needed.
+
+- **Vendored** in [`Packages/`](Packages): FederationKit, LemmyKit, MastodonKit, FeedKit, ModerationKit, IPFSKit, MarkdownView. Each keeps its own `LICENSE`.
+- **Remote, pinned** to exact revisions: [Granite](https://github.com/riteshpakala/Granite), [Nuke](https://github.com/kean/Nuke), [KeyboardToolbar](https://github.com/pexavc/KeyboardToolbar), and MarkdownView's [swift-markdown](https://github.com/apple/swift-markdown) and [Highlightr](https://github.com/raspu/Highlightr) (see `Package.resolved`).
 
 ## Disclaimers
 - Due to the nature of possible state schemas being changed. Saved data such as account information or bookmarks may be removed in future release versions (or not at all).
@@ -31,7 +41,7 @@
 
 | Expanded Layout (iPad/macOS)   | |
 | :-------- | -------: |
-| ![Image](Resources/README/1.gif) | [Granite](https://github.com/pexavc/Granite) supports macOS. Same navigation API can direct window spawning or navigation stack pushing. |
+| ![Image](Resources/README/1.gif) | [Granite](https://github.com/riteshpakala/Granite) supports macOS. Same navigation API can direct window spawning or navigation stack pushing. |
 | ![Image](Resources/README/2.png) | Spawn multiple windows of entire feed layouts with multiple communities to observe. Will be helpful in the case of moderating multiple communities for instance. |
 
 | Looms    | |
@@ -94,7 +104,7 @@
 
 ## Contributing
 
-Loom uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR and/or Issue.
+Loom uses [Granite](https://github.com/riteshpakala/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR and/or Issue.
 
 An interactive websites to generate boilerplate components using a GUI to define styling and needed state properties is in the works! This will allow you to simply download the generated component and drag into XCode for immediate use.
 
@@ -108,15 +118,15 @@ Mostly because of *Relays* and project organization. I'd say testing too, but on
 
 ## Swift Packages
 
-- [Granite](https://github.com/pexavc/Granite)
-- [MarqueKit](https://github.com/pexavc/marquekit)
-- [MarbleKit](https://github.com/pexavc/marblekit)
-- [ModerationKit](https://github.com/pexavc/moderationkit)
-- [FederationKit](https://github.com/neatia/federationkit)
-- [IPFSKit](https://github.com/pexavc/ipfskit)
+- [Granite](https://github.com/riteshpakala/Granite)
+- FederationKit, LemmyKit, MastodonKit (vendored in `Packages/`)
+- [FeedKit](https://github.com/nmdias/FeedKit) Thanks to [@nmdias](https://github.com/nmdias) (vendored)
+- ModerationKit (vendored, GPL-3.0; NSFW model based on [open_nsfw](https://github.com/yahoo/open_nsfw))
+- [IPFSKit](https://github.com/pexavc/ipfskit) (vendored)
+- [MarkdownView](https://github.com/LiYanan2004/MarkdownView) Thanks to [@LiYanan2004](https://github.com/LiYanan2004) (vendored, patched for the iOS 27 SDK)
 - [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean)
-- [MarkdownView](https://github.com/pexavc/MarkdownView) Thanks to [@LiYanan2004](https://github.com/LiYanan2004)
 - [KeyboardToolbar](https://github.com/simonbs/KeyboardToolbar) Thanks to [@simonbs](https://github.com/simonbs)
+- MarbleKit is no longer available; its YouTube shader player lives on as a local stand-in in `Shared/Marble/Marble.swift`.
 
 ### Contact
 

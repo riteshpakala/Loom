@@ -65,10 +65,12 @@ extension LayoutService {
     
     static func expandWindow(close: Bool = false) {
         #if os(macOS)
-        if close {
-            GraniteNavigationWindow.shared.updateWidth(720, id: GraniteNavigationWindow.defaultMainWindowId)
-        } else {
-            GraniteNavigationWindow.shared.updateWidth(1200, id: GraniteNavigationWindow.defaultMainWindowId)
+        Task { @MainActor in
+            if close {
+                GraniteNavigationWindow.shared.updateWidth(720, id: GraniteNavigationWindow.defaultMainWindowId)
+            } else {
+                GraniteNavigationWindow.shared.updateWidth(1200, id: GraniteNavigationWindow.defaultMainWindowId)
+            }
         }
         #endif
     }
