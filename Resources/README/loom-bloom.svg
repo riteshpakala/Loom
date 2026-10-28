@@ -479,8 +479,8 @@
 <circle cx="570" cy="230" r="5" fill="#ffffff"/>
 </g>
 <text x="70" y="204" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="3.2" fill="#ffffff" fill-opacity="0.92">LOOM + GRANITE</text>
-<text x="70" y="264" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#aab4cc" fill-opacity="0.85">Built solo · design · iOS architecture · engineering</text>
-<text x="70" y="284" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#aab4cc" fill-opacity="0.85">CoreML · on-device ML · iOS application performance</text>
+<text x="70" y="264" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#aab4cc" fill-opacity="0.85">Built solo · design · iOS architecture · safety</text>
+<text x="70" y="284" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#aab4cc" fill-opacity="0.85">on-device ML · iOS application performance</text>
 <text x="570" y="342" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" letter-spacing="2.6" fill="#ffffff" fill-opacity="0.8">APPLE, INC.</text>
 </g>
 <rect x="0.5" y="0.5" width="1199" height="459" rx="28" fill="none" stroke="#ffffff" stroke-opacity="0.08"/>
