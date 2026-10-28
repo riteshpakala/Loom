@@ -73,8 +73,32 @@ extension NSImage {
         let new_size = self.size.newSize(ratio: ratio)
         
         let resized = self.resizeWhileMaintainingAspectRatioToSize(size: .init(width: new_size.width, height: new_size.height))
-        
+
         return resized ?? self
+    }
+
+    func pngData() -> Data? {
+        guard let tiff = tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: tiff) else { return nil }
+        return bitmap.representation(using: .png, properties: [:])
+    }
+
+    //Fits within `size`, keeping the original aspect ratio
+    func resizeWhileMaintainingAspectRatioToSize(size: NSSize) -> NSImage? {
+        guard self.size.width > 0, self.size.height > 0 else { return nil }
+
+        let scale = min(size.width / self.size.width, size.height / self.size.height)
+        let target = NSSize(width: (self.size.width * scale).rounded(),
+                            height: (self.size.height * scale).rounded())
+
+        let resized = NSImage(size: target)
+        resized.lockFocus()
+        draw(in: .init(origin: .zero, size: target),
+             from: .init(origin: .zero, size: self.size),
+             operation: .copy,
+             fraction: 1.0)
+        resized.unlockFocus()
+        return resized
     }
 }
 #else

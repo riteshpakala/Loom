@@ -152,8 +152,9 @@ extension GraniteModalManager {
         let sheetView = GraniteModalWindow.PassthroughView()
             .addGraniteSheet(sheetManager,
                              background: Color.clear)
-        
-        guard let keyWindow = GraniteNavigationWindow.shared.mainWindow?.retrieve() else {
+
+        //attachWindow is only ever dispatched onto the main queue
+        guard let keyWindow = MainActor.assumeIsolated({ GraniteNavigationWindow.shared.mainWindow?.retrieve() }) else {
             return
         }
         
@@ -189,6 +190,7 @@ extension GraniteModalManager {
 #endif
     }
     
+    @MainActor
     func centerWindow() {
         #if os(macOS)
         guard let keyWindow = GraniteNavigationWindow.shared.mainWindow?.retrieve() else {
