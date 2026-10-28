@@ -64,7 +64,7 @@ Open `Loom.xcodeproj` and run the `Loom (iOS)` or `Loom (macOS)` scheme. No acco
 
 | Safety    | |
 | :-------- | -------: |
-| ![Image](Resources/README/7.gif)  | On-device CoreML models + keyword filtering to remove posts from the feed. `NSFW Extended` will remove posts that are detected as NSFW even if they are not flagged as so. Based on: [NSFWDetector](https://github.com/lovoo/NSFWDetector), [open_nsfw](https://github.com/yahoo/open_nsfw)     |
+| ![Image](Resources/README/7.gif)  | On-device CoreML models + keyword filtering to remove posts from the feed. `NSFW Shield` will remove posts that are detected as NSFW even if they are not flagged as so. Based on: [NSFWDetector](https://github.com/lovoo/NSFWDetector), [open_nsfw](https://github.com/yahoo/open_nsfw)     |
 
 | Styling    | |
 | :-------- | -------: |

@@ -55,7 +55,7 @@ extension Settings: View {
                         VStack(alignment: .leading, spacing: 0) {
                             Toggle(isOn: config._state.extendedNSFWFilterEnabled) {
                                 //TODO: localize
-                                Text("NSFW Extended")
+                                Text("NSFW Shield")
                                     .font(.body)
                                     .offset(x: 0, y: Device.isMacOS ? -1 : 0)
                             }
@@ -404,7 +404,7 @@ extension Settings: View {
                         .font(Fonts.live(.footnote, .regular))
                         .foregroundColor(.accentColor)
                         .onTapGesture {
-                            if let url = URL(string: "https://github.com/neatia/Loom") {
+                            if let url = URL(string: "https://github.com/riteshpakala/Loom") {
                                 openURL(url)
                             }
                         }
