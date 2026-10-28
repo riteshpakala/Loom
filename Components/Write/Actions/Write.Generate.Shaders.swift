@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import MarbleKit
 
 extension Write.Generate {
     static func shader(title: String,

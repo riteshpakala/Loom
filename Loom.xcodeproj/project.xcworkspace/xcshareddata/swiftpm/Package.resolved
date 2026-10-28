@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "ffmpegkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/FFmpegKit.git",
-      "state" : {
-        "revision" : "89f71ccee33d1ff402201162f28b6400f349c873",
-        "version" : "1.0.0"
-      }
-    },
-    {
       "identity" : "highlightr",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raspu/Highlightr.git",
@@ -55,24 +46,6 @@
       }
     },
     {
-      "identity" : "marblekit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/MarbleKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "129a6f8adbbf568133b0fc98afe60f271ca10cec"
-      }
-    },
-    {
-      "identity" : "markdownview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/MarkdownView",
-      "state" : {
-        "branch" : "main",
-        "revision" : "541741eb819c4ce404390afb5120ba082c1e4187"
-      }
-    },
-    {
       "identity" : "mastodonkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/MastodonKit",
@@ -106,6 +79,24 @@
       "state" : {
         "revision" : "3bc2f3e25df0cecc5dc269f7ccae65d0f386f06a",
         "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "swift-docc-plugin",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-docc-plugin",
+      "state" : {
+        "revision" : "647c708be89f834fa6a6d4945442793a77ddf5b6",
+        "version" : "1.5.0"
+      }
+    },
+    {
+      "identity" : "swift-docc-symbolkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-docc-symbolkit",
+      "state" : {
+        "revision" : "b45d1f2ed151d057b54504d653e0da5552844e34",
+        "version" : "1.0.0"
       }
     },
     {
