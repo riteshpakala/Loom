@@ -3,7 +3,7 @@ import SwiftUI
 import Granite
 
 public struct GraniteAlertView : GraniteModal {
-    @GraniteAction<Void> var dismiss
+    @Environment(\.graniteBubble) var bubble
     
     @EnvironmentObject private var manager : GraniteModalManager
     @Environment(\.graniteAlertViewStyle) private var style
@@ -85,7 +85,7 @@ public struct GraniteAlertView : GraniteModal {
                         } else {
                             Button(action: {
                                 manager.dismiss()
-                                dismiss.perform()
+                                bubble(.dismiss)
                                 action.handler()
                             }) {
                                 action.content
@@ -178,7 +178,7 @@ public struct GraniteAlertView : GraniteModal {
                     } else {
                         Button(action: {
                             manager.dismiss()
-                            dismiss.perform()
+                            bubble(.dismiss)
                             action.handler()
                         }) {
                             action.content

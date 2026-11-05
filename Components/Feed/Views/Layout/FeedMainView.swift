@@ -11,8 +11,6 @@ import SwiftUI
 import FederationKit
 
 struct FeedMainView<Content: View>: View {
-    @GraniteAction<FederatedCommunity> var viewCommunity
-    @GraniteAction<FederatedPostResource> var showContent
     
     @EnvironmentObject var pager: Pager<FederatedPostResource>
     @Environment(\.graniteEvent) var interact
@@ -44,9 +42,6 @@ struct FeedMainView<Content: View>: View {
         } content: { postView in
             PostCardView(topPadding: pager.firstItem?.id == postView.id ? topPadding : nil,
                          linkPreviewType: .largeNoMetadata)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
                 .graniteEvent(interact)
                 .contentContext(.init(postModel: postView,
                                       preferredFeedStyle: feedStyle))

@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 import ModerationKit
 
 struct ContentMetadataView: View {
-    @GraniteAction<Void> var showContent
+    @Environment(\.graniteBubble) var bubble
     
     #if os(iOS)
     var backgroundColor: Color = Color(.systemGray5)
@@ -46,7 +46,7 @@ struct ContentMetadataView: View {
 //            if UIApplication.shared.canOpenURL(url) {
 //                self.isPresented.toggle()
 //            }
-            showContent.perform()
+            bubble(.showContent)
             #else
             self.isPresented.toggle()
             #endif

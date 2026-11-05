@@ -78,12 +78,14 @@ extension Feed {
                 
                 if Device.isExpandedLayout == false {
                     AccountView()
-                        .attach({
-                            GraniteHaptic.light.invoke()
-                            ModalService.shared.presentSheet {
-                                LoginView()
+                        .onBubble {
+                            On(.login) {
+                                GraniteHaptic.light.invoke()
+                                ModalService.shared.presentSheet {
+                                    LoginView()
+                                }
                             }
-                        }, at: \.login)
+                        }
                         .offset(y: hasCommunityBanner ? -1 : 0)
                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
                         .padding(.vertical, hasCommunityBanner ? 4 : 0)

@@ -17,29 +17,30 @@ extension Feed {
                                   communityView: state.communityView,
                                   location: state.location,
                                   peerLocation: state.peerLocation)
-        .attach({ interact in
-            if account.isLoggedIn {
-                account
-                    .center
-                    .interact
-                    .send(AccountService.Interact.Meta(intent: interact))
-            } else {
-                ModalService.shared.presentSheet {
-                    LoginView()
+        .onBubble {
+            On(.interact, AccountService.Interact.Intent.self) { interact in
+                if account.isLoggedIn {
+                    account
+                        .center
+                        .interact
+                        .send(AccountService.Interact.Meta(intent: interact))
+                } else {
+                    ModalService.shared.presentSheet {
+                        LoginView()
+                    }
                 }
             }
-        }, at: \.interact)
-        .attachAndClear({ location in
-            fetchCommunity(state.community,
-                           location: location,
-                           reset: true)
-        }, at: \.changeLocation)
+            On(.changeLocation, FederatedLocationType.self) { location in
+                fetchCommunity(state.community,
+                               location: location,
+                               reset: true)
+            }
+        }
     }
 }
 
 struct FeedCommunityInfoMenuView: View {
-    @GraniteAction<AccountService.Interact.Intent> var interact
-    @GraniteAction<FederatedLocationType> var changeLocation
+    @Environment(\.graniteBubble) var bubble
     
     //@Relay var account: AccountService
     @Relay var loom: LoomService
@@ -56,7 +57,7 @@ struct FeedCommunityInfoMenuView: View {
                     Button {
                         guard communityView.subscribed != .pending else { return }
                         GraniteHaptic.light.invoke()
-                        interact.perform(.subscribe(communityView))
+                        bubble(.interact, AccountService.Interact.Intent.subscribe(communityView))
 
                     } label: {
                         switch communityView.subscribed {
@@ -73,7 +74,7 @@ struct FeedCommunityInfoMenuView: View {
                     if communityView.subscribed == .pending {
                         Button(role: .destructive) {
                             GraniteHaptic.light.invoke()
-                            interact.perform(.subscribe(communityView))
+                            bubble(.interact, AccountService.Interact.Intent.subscribe(communityView))
 
                         } label: {
                             Text("MISC_CANCEL")
@@ -87,7 +88,7 @@ struct FeedCommunityInfoMenuView: View {
             
             if location != .base {
                 Button {
-                    changeLocation.perform(.base)
+                    bubble(.changeLocation, FederatedLocationType.base)
                 } label: {
                     Text("LISTING_TYPE_LOCAL")
                     Image(systemName: "house")
@@ -101,7 +102,7 @@ struct FeedCommunityInfoMenuView: View {
             
             if (location == .base && FederationKit.host != communityView?.community.ap_id?.host) || (location.isPeer) {
                 Button {
-                    changeLocation.perform(.source)
+                    bubble(.changeLocation, FederatedLocationType.source)
                 } label: {
                     //TODO: localize
                     Text("@\(communityView?.community.actor_id.host ?? "Source")")
@@ -118,7 +119,7 @@ struct FeedCommunityInfoMenuView: View {
                case .peer(let host) = peerLocation {
                 Button {
                     guard let location = peerLocation else { return }
-                    changeLocation.perform(location)
+                    bubble(.changeLocation, location)
                 } label: {
                     Text("@\(host)")
                     Image(systemName: "person.2.wave.2")

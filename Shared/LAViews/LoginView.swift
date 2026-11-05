@@ -12,8 +12,7 @@ import SwiftUI
 import FederationKit
 
 struct LoginView: View {
-    @GraniteAction<Void> var cancel
-    @GraniteAction<Void> var add
+    @Environment(\.graniteBubble) var bubble
     
     var addToProfiles: Bool = false
     
@@ -161,7 +160,7 @@ extension LoginView {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    cancel.perform()
+                    bubble(.cancel)
                 } label: {
                     Text("MISC_CANCEL")
                         .font(.headline)

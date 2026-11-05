@@ -3,8 +3,7 @@ import SwiftUI
 import Granite
 import Combine
 
-final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate, GraniteActionable {
-    @GraniteAction<Void> var dismissPerfmored
+final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate {
     
     @Published var presenters = [AnyGraniteModal]()
     @Published var sheet : AnyView? = nil
@@ -77,7 +76,6 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
         }
 #else
         _ = presenters.removeLast()
-        dismissPerfmored.perform()
 #endif
     }
     

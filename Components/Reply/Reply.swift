@@ -1,3 +1,4 @@
+import SwiftUI
 import Granite
 import FederationKit
 
@@ -11,8 +12,7 @@ struct Reply: GraniteComponent {
     @Command var center: Center
     @Relay var content: ContentService
     
-    @GraniteAction<(FederatedComment, FederatedCommentResource)> var updatePost
-    @GraniteAction<(FederatedCommentResource, FederatedCommentResource?)> var updateComment
+    @Environment(\.graniteBubble) var bubble
     
     var listeners: Void {
         content
@@ -26,16 +26,16 @@ struct Reply: GraniteComponent {
                         guard let user = FederationKit.user()?.resource.user.person else {
                             return
                         }
-                        updatePost.perform((comment, comment.asView(creator: user, postView: model)))
+                        bubble(.updatePost, (comment, comment.asView(creator: user, postView: model)) as (FederatedComment, FederatedCommentResource))
                     case .replyCommentSubmit(let comment, let reply):
-                        updateComment.perform((comment, reply))
+                        bubble(.updateComment, (comment, reply) as (FederatedCommentResource, FederatedCommentResource?))
                     default:
                         break
                     }
                 } else if let response = value as? ContentService.Interact.Meta {
                     switch response.kind {
                     case .editCommentSubmit(let model, _):
-                        updateComment.perform((model, nil))
+                        bubble(.updateComment, (model, nil) as (FederatedCommentResource, FederatedCommentResource?))
                     default:
                         break
                     }

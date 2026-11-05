@@ -14,8 +14,7 @@ import FederationKit
 //TODO: merge with SidebarCardView
 struct CommunityCardView: View {
     @Environment(\.graniteRouter) var router
-    @GraniteAction<(FederatedCommunityResource, FederatedData?)> var viewCommunity
-    
+    @Environment(\.graniteBubble) var bubble
     
     var model: FederatedCommunityResource
     //TODO: centralize this at a higher level
@@ -354,7 +353,7 @@ extension CommunityCardView {
         GraniteHaptic.light.invoke()
         
         if Device.isExpandedLayout || shouldRoute == false {
-            viewCommunity.perform((model, federatedData))
+            bubble(.viewCommunity, (model, federatedData) as (FederatedCommunityResource, FederatedData?))
         } else {
             router.push {
                 Feed(community, federatedData: federatedData)

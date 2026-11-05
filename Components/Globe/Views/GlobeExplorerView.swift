@@ -117,13 +117,15 @@ extension GlobeExplorerView {
                 InstanceCardView(connected,
                                  isConnected: true,
                                  isFavorite: explorer.state.favorites[connected.domain] != nil)
-                .attach({ instance in
-                    if explorer._state.favorites.wrappedValue[instance.domain] == nil {
-                        explorer._state.favorites.wrappedValue[instance.domain] = instance
-                    } else {
-                        explorer._state.favorites.wrappedValue[instance.domain] = nil
+                .onBubble {
+                    On(.favorite, FederatedInstance.self) { instance in
+                        if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                            explorer._state.favorites.wrappedValue[instance.domain] = instance
+                        } else {
+                            explorer._state.favorites.wrappedValue[instance.domain] = nil
+                        }
                     }
-                }, at: \.favorite)
+                }
                 .padding(.layer3)
                 .id(connected.domain)
             }
@@ -131,12 +133,14 @@ extension GlobeExplorerView {
             Divider()
             
             SearchBar(debounceInterval: 2)
-                .attach({ query in
-                    search(query)
-                }, at: \.query)
-                .attach({
-                    searchedInstances.removeAll()
-                }, at: \.clean)
+                .onBubble {
+                    On(.query, String.self) { query in
+                        search(query)
+                    }
+                    On(.clean) {
+                        searchedInstances.removeAll()
+                    }
+                }
             Divider()
 
             if searchedInstances.isNotEmpty {
@@ -146,16 +150,18 @@ extension GlobeExplorerView {
                             InstanceCardView(instance,
                                              isConnected: connected.domain == instance.domain,
                                              isFavorite: explorer.state.favorites[instance.domain] != nil)
-                                .attach({ instance in
-                                    self.connected = instance
-                                }, at: \.connect)
-                                .attach({ instance in
-                                    if explorer._state.favorites.wrappedValue[instance.domain] == nil {
-                                        explorer._state.favorites.wrappedValue[instance.domain] = instance
-                                    } else {
-                                        explorer._state.favorites.wrappedValue[instance.domain] = nil
+                                .onBubble {
+                                    On(.connect, FederatedInstance.self) { instance in
+                                        self.connected = instance
                                     }
-                                }, at: \.favorite)
+                                    On(.favorite, FederatedInstance.self) { instance in
+                                        if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                                            explorer._state.favorites.wrappedValue[instance.domain] = instance
+                                        } else {
+                                            explorer._state.favorites.wrappedValue[instance.domain] = nil
+                                        }
+                                    }
+                                }
                                 .graniteEvent(restart)
                                 .padding(.horizontal, .layer3)
                         }
@@ -200,16 +206,18 @@ extension GlobeExplorerView {
                         InstanceCardView(instance,
                                          isConnected: connected.domain == instance.domain,
                                          isFavorite: explorer.state.favorites[instance.domain] != nil)
-                            .attach({ instance in
-                                self.connected = instance
-                            }, at: \.connect)
-                            .attach({ instance in
-                                if explorer._state.favorites.wrappedValue[instance.domain] == nil {
-                                    explorer._state.favorites.wrappedValue[instance.domain] = instance
-                                } else {
-                                    explorer._state.favorites.wrappedValue[instance.domain] = nil
+                            .onBubble {
+                                On(.connect, FederatedInstance.self) { instance in
+                                    self.connected = instance
                                 }
-                            }, at: \.favorite)
+                                On(.favorite, FederatedInstance.self) { instance in
+                                    if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                                        explorer._state.favorites.wrappedValue[instance.domain] = instance
+                                    } else {
+                                        explorer._state.favorites.wrappedValue[instance.domain] = nil
+                                    }
+                                }
+                            }
                             .graniteEvent(restart)
                             .padding(.horizontal, .layer3)
                     }
@@ -227,16 +235,18 @@ extension GlobeExplorerView {
                     InstanceCardView(instance,
                                      isConnected: connected.domain == instance.domain,
                                      isFavorite: explorer.state.favorites[instance.domain] != nil)
-                        .attach({ instance in
-                            self.connected = instance
-                        }, at: \.connect)
-                        .attach({ instance in
-                            if explorer._state.favorites.wrappedValue[instance.domain] == nil {
-                                explorer._state.favorites.wrappedValue[instance.domain] = instance
-                            } else {
-                                explorer._state.favorites.wrappedValue[instance.domain] = nil
+                        .onBubble {
+                            On(.connect, FederatedInstance.self) { instance in
+                                self.connected = instance
                             }
-                        }, at: \.favorite)
+                            On(.favorite, FederatedInstance.self) { instance in
+                                if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                                    explorer._state.favorites.wrappedValue[instance.domain] = instance
+                                } else {
+                                    explorer._state.favorites.wrappedValue[instance.domain] = nil
+                                }
+                            }
+                        }
                         .graniteEvent(restart)
                         .padding(.horizontal, .layer3)
                 }

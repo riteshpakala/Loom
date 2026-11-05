@@ -18,11 +18,7 @@ struct HeaderCardView: View {
     
     @Relay var layout: LayoutService
     
-    @GraniteAction<FederatedCommunity> var viewCommunity
-    @GraniteAction<Void> var tapped
-    @GraniteAction<Void> var edit
-    @GraniteAction<Void> var goToThread
-    @GraniteAction<Void> var replyToContent
+    @Environment(\.graniteBubble) var bubble
     
     @State var postView: FederatedPostResource? = nil
     
@@ -73,7 +69,7 @@ struct HeaderCardView: View {
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                tapped.perform()
+                bubble(.tappedHeader)
             }
             
             switch context.viewingContext {
@@ -104,11 +100,9 @@ struct HeaderCardView: View {
                                     person: context.person,
                                     bookmarkKind: context.bookmarkKind,
                                     isCompact: isCompact)
-                        .attach(viewCommunity, at: \.viewCommunity)
-                        .attach(fetchFederatedPostResource, at: \.goToPost)
-                        .attach(goToThread, at: \.goToThread)
-                        .attach(replyToContent, at: \.replyToContent)
-                        .attach(edit, at: \.edit)
+                        .onBubble {
+                            On(.goToPost) { fetchFederatedPostResource() }
+                        }
                 }
             }
         }

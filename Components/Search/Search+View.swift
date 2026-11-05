@@ -79,12 +79,14 @@ extension Search: View {
                 Divider()
                 
                 SearchBar(lastQuery: $conductor.lastQuery)
-                    .attach({ query in
-                        conductor.search(query)
-                    }, at: \.query)
-                    .attach({
-                        conductor.clean()
-                    }, at: \.clean)
+                    .onBubble {
+                        On(.query, String.self) { query in
+                            conductor.search(query)
+                        }
+                        On(.clean) {
+                            conductor.clean()
+                        }
+                    }
                     .ignoresSafeArea(.keyboard)
                 
                 Divider()

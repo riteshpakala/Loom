@@ -16,9 +16,7 @@ struct FooterView: View {
     @Environment(\.graniteRouter) var router
     @Environment(\.pagerMetadata) var metadata
     
-    @GraniteAction<Int> var showComments
-    @GraniteAction<FederatedPostResource> var replyPost
-    @GraniteAction<FederatedCommentResource> var replyComment
+    @Environment(\.graniteBubble) var bubble
     
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
@@ -187,12 +185,12 @@ extension FooterView {
                           let postView = context.postModel {
                            
                            GraniteHaptic.light.invoke()
-                           replyPost.perform(postView)
+                           bubble(.replyPost, postView)
                        } else if context.isComment,
                           let commentView = context.commentModel {
                            
                            GraniteHaptic.light.invoke()
-                           replyComment.perform(commentView)
+                           bubble(.replyComment, commentView)
                        }
                    } label: {
                        Image(systemName: "square.and.pencil")
@@ -398,12 +396,12 @@ extension FooterView {
                           let postView = context.postModel {
                            LoomLog("Editing post", level: .debug)
                            GraniteHaptic.light.invoke()
-                           replyPost.perform(postView)
+                           bubble(.replyPost, postView)
                        } else if context.isComment,
                           let commentView = context.commentModel {
                            
                            GraniteHaptic.light.invoke()
-                           replyComment.perform(commentView)
+                           bubble(.replyComment, commentView)
                        }
                    } label: {
                        Image(systemName: "square.and.pencil")

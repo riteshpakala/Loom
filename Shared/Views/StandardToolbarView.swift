@@ -11,7 +11,6 @@ import GraniteUI
 import SwiftUI
 
 struct StandardToolbarView: View {
-    @GraniteAction<Void> var search
     
     var body: some View {
         Group {

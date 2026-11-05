@@ -13,7 +13,7 @@ import FederationKit
 
 struct ListingSelectorView: View {
     @Environment(\.contentContext) var context
-    @GraniteAction<Void> var fetch
+    @Environment(\.graniteBubble) var bubble
     
     @Binding var listingType: FederatedListingType
     
@@ -25,7 +25,7 @@ struct ListingSelectorView: View {
                 GraniteHaptic.light.invoke()
                 listingType = .all
                 
-                fetch.perform()
+                bubble(.fetch)
             } label: {
                 Text(FederatedListingType.all.displayString)
                 Image(systemName: FederatedListingType.all.systemImageName)
@@ -37,7 +37,7 @@ struct ListingSelectorView: View {
                 GraniteHaptic.light.invoke()
                 listingType = .local
                 
-                fetch.perform()
+                bubble(.fetch)
             } label: {
                 Text(FederatedListingType.local.displayString)
                 Image(systemName: FederatedListingType.local.systemImageName)

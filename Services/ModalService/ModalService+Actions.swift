@@ -40,9 +40,11 @@ extension ModalService {
         
         presentSheet(id: id) {
             alert
-                .attach( {
-                    sheetManager.dismiss(id: id)
-                }, at: \.dismiss)
+                .onBubble {
+                    On(.dismiss) {
+                        sheetManager.dismiss(id: id)
+                    }
+                }
                 .frame(maxWidth: 480)
                 .environmentObject(modalManager)
         }

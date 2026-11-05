@@ -83,46 +83,50 @@ extension Settings: View {
                     .padding(.horizontal, .layer4)
                     
                     FilterKeywordCollectionView(config: config.state.keywordsFilter)
-                        .attach({ keywordToEdit in
-                            ModalService
-                                .shared
-                                .presentSheet {
-                                
-                                FilterKeywordView(keywordToEdit: keywordToEdit)
-                                        .attach({ keyword in
-                                            var keywords: [FilterConfig.Keyword] = config.state.keywordsFilter.keywords
-                                            keywords.removeAll(where: { $0.value.lowercased() == keyword.value.lowercased() })
-                                            
-                                            let filterConfig: FilterConfig = .init(keywords: keywords)
-                                            config._state.keywordsFilter.wrappedValue = filterConfig
-                                            if config.state.keywordsFilterEnabled {
-                                                PagerFilter.filterKeywords = filterConfig
+                        .onBubble {
+                            On(.addKeyword, FilterConfig.Keyword?.self) { keywordToEdit in
+                                ModalService
+                                    .shared
+                                    .presentSheet {
+
+                                    FilterKeywordView(keywordToEdit: keywordToEdit)
+                                            .onBubble {
+                                                On(.remove, FilterConfig.Keyword.self) { keyword in
+                                                    var keywords: [FilterConfig.Keyword] = config.state.keywordsFilter.keywords
+                                                    keywords.removeAll(where: { $0.value.lowercased() == keyword.value.lowercased() })
+
+                                                    let filterConfig: FilterConfig = .init(keywords: keywords)
+                                                    config._state.keywordsFilter.wrappedValue = filterConfig
+                                                    if config.state.keywordsFilterEnabled {
+                                                        PagerFilter.filterKeywords = filterConfig
+                                                    }
+                                                    DispatchQueue.main.async {
+                                                        ModalService.shared.dismissSheet()
+                                                    }
+                                                }
+                                                On(.save, FilterConfig.Keyword.self) { keyword in
+                                                    var keywords: [FilterConfig.Keyword] = config.state.keywordsFilter.keywords
+
+                                                    if let index = keywords.firstIndex(where: { $0.value.lowercased() == keyword.value.lowercased() }) {
+                                                        keywords[index] = keyword
+                                                    } else {
+                                                        keywords.insert(keyword, at: 0)
+                                                    }
+
+                                                    let filterConfig: FilterConfig = .init(keywords: keywords)
+
+                                                    config._state.keywordsFilter.wrappedValue = filterConfig
+                                                    if config.state.keywordsFilterEnabled {
+                                                        PagerFilter.filterKeywords = filterConfig
+                                                    }
+                                                    DispatchQueue.main.async {
+                                                        ModalService.shared.dismissSheet()
+                                                    }
+                                                }
                                             }
-                                            DispatchQueue.main.async {
-                                                ModalService.shared.dismissSheet()
-                                            }
-                                        }, at: \.remove)
-                                        .attachAndClear({ keyword in
-                                            var keywords: [FilterConfig.Keyword] = config.state.keywordsFilter.keywords
-                                            
-                                            if let index = keywords.firstIndex(where: { $0.value.lowercased() == keyword.value.lowercased() }) {
-                                                keywords[index] = keyword
-                                            } else {
-                                                keywords.insert(keyword, at: 0)
-                                            }
-                                            
-                                            let filterConfig: FilterConfig = .init(keywords: keywords)
-                                            
-                                            config._state.keywordsFilter.wrappedValue = filterConfig
-                                            if config.state.keywordsFilterEnabled {
-                                                PagerFilter.filterKeywords = filterConfig
-                                            }
-                                            DispatchQueue.main.async {
-                                                ModalService.shared.dismissSheet()
-                                            }
-                                        }, at: \.save)
+                                }
                             }
-                        }, at: \.addKeyword)
+                        }
                         .padding(.horizontal, .layer4)
                         .padding(.top, .layer2)
                 }

@@ -582,9 +582,11 @@ extension ProfileSettingsView {
     func importPicture(setAvatar: Bool, setBanner: Bool) {
         ModalService.shared.presentSheet {
             ImagePicker(imageData: setAvatar ? $imageDataAvatar : $imageDataBanner)
-                .attach( {
-                    ModalService.shared.dismissSheet()
-                }, at: \.dismiss)
+                .onBubble {
+                    On(.dismiss) {
+                        ModalService.shared.dismissSheet()
+                    }
+                }
         }
     }
 }

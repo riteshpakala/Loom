@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Granite
+import FederationKit
 import GraniteUI
 
 extension Write {
@@ -81,11 +82,13 @@ extension Write {
     func setCommunity() {
         modal.presentSheet(id: Write.modalId, detents: [.large]) {
             CommunityPickerView()
-                .attach({ (communityView, federatedData) in
-                    GraniteHaptic.light.invoke()
-                    _state.postCommunity.wrappedValue = communityView
-                    modal.dismissSheet(id: Write.modalId)
-                }, at: \.pickedCommunity)
+                .onBubble {
+                    On(.pickedCommunity, (FederatedCommunityResource, FederatedData?).self) { (communityView, federatedData) in
+                        GraniteHaptic.light.invoke()
+                        _state.postCommunity.wrappedValue = communityView
+                        modal.dismissSheet(id: Write.modalId)
+                    }
+                }
                 .frame(width: Device.isMacOS ? 400 : nil, height: Device.isMacOS ? 400 : nil)
         }
     }

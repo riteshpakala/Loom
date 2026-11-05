@@ -12,8 +12,6 @@ import SwiftUI
 import FederationKit
 
 struct ReportView: View {
-    @GraniteAction<Void> var cancel
-    @GraniteAction<Void> var add
     
     enum Kind {
         case post(FederatedPostResource)

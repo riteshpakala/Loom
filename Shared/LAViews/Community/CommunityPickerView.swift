@@ -14,7 +14,7 @@ import FederationKit
 struct CommunityPickerView: View {
     @Environment(\.graniteRouter) var router
     
-    @GraniteAction<(FederatedCommunityResource, FederatedData?)> var pickedCommunity
+    @Environment(\.graniteBubble) var bubble
     
     var modal: Bool = true
     var shouldRoute: Bool = false
@@ -80,7 +80,7 @@ struct CommunityPickerView: View {
                                 CommunitySidebarCardView(model: communityView,
                                                          fullWidth: true)
                                 .onTapGesture {
-                                    pickedCommunity.perform((communityView, nil))
+                                    bubble(.pickedCommunity, (communityView, nil) as (FederatedCommunityResource, FederatedData?))
                                 }
                                 .padding(.leading, .layer3)
                                 .padding(.trailing, .layer3)
@@ -89,9 +89,11 @@ struct CommunityPickerView: View {
                                 CommunityCardView(model: communityView,
                                                   shouldRoute: shouldRoute,
                                                   fullWidth: true)
-                                .attach({ (communityView, federatedData) in
-                                    pickedCommunity.perform((communityView, federatedData))
-                                }, at: \.viewCommunity)
+                                .onBubble {
+                                    On(.viewCommunity, (FederatedCommunityResource, FederatedData?).self) { (communityView, federatedData) in
+                                        bubble(.pickedCommunity, (communityView, federatedData) as (FederatedCommunityResource, FederatedData?))
+                                    }
+                                }
                                 .padding(.leading, .layer3)
                                 .padding(.trailing, .layer3)
                                 .padding(.vertical, .layer3)

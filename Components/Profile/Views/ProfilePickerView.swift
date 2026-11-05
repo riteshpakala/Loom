@@ -12,7 +12,7 @@ import Granite
 import GraniteUI
 
 struct ProfilePickerView: View {
-    @GraniteAction<Void> var refresh
+    @Environment(\.graniteBubble) var bubble
     
     enum Kind: String, GraniteModel {
         case overview
@@ -37,7 +37,7 @@ struct ProfilePickerView: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    refresh.perform()
+                    bubble(.refresh)
                     kind = .overview
                 } label: {
                     VStack {
@@ -52,7 +52,7 @@ struct ProfilePickerView: View {
                 if isMe {
                     Button {
                         GraniteHaptic.light.invoke()
-                        refresh.perform()
+                        bubble(.refresh)
                         kind = .mentions
                     } label: {
                         VStack {
@@ -66,7 +66,7 @@ struct ProfilePickerView: View {
                     
                     Button {
                         GraniteHaptic.light.invoke()
-                        refresh.perform()
+                        bubble(.refresh)
                         kind = .replies
                     } label: {
                         VStack {

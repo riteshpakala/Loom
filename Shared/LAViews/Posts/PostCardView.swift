@@ -19,8 +19,7 @@ struct PostCardView: View {
     @Environment(\.graniteEvent) var interact //account.center.interact
     @Environment(\.pagerMetadata) var contentMetadata
     
-    @GraniteAction<FederatedPostResource> var reply
-    @GraniteAction<FederatedCommunity> var viewCommunity
+    @Environment(\.graniteBubble) var bubble
     
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
@@ -106,12 +105,11 @@ struct PostCardView: View {
             case .style1, .style3:
                 VStack(alignment: .leading, spacing: 0) {
                     HeaderView(badge: .noBadge)
-                        .attach({ community in
-                            viewCommunity.perform(community)
-                        }, at: \.viewCommunity)
-                        .attach({
-                            editModel()
-                        }, at: \.edit)
+                        .onBubble {
+                            On(.edit) {
+                                editModel()
+                            }
+                        }
                         .padding(.bottom, .layer2)
                     
                     contentView
@@ -126,35 +124,34 @@ struct PostCardView: View {
                                         isCompact: isCompact) {
                     contentView
                 }
-                .attach({
-                    guard !shouldCensor,
-                          let currentModel else { return }
-                    
-                    if Device.isExpandedLayout {
-                        layout._state.wrappedValue.feedContext = .viewPost(currentModel)
-                    } else {
-                        GraniteHaptic.light.invoke()
-                        router.push {
-                            PostDisplayView(context: _context,
-                                            updatedModel: currentModel)
+                .onBubble {
+                    On(.tappedThreadLine) {
+                        guard !shouldCensor,
+                              let currentModel else { return }
+
+                        if Device.isExpandedLayout {
+                            layout._state.wrappedValue.feedContext = .viewPost(currentModel)
+                        } else {
+                            GraniteHaptic.light.invoke()
+                            router.push {
+                                PostDisplayView(context: _context,
+                                                updatedModel: currentModel)
+                            }
+                        }
+
+                    }
+                    On(.edit) {
+                        editModel()
+                    }
+                    On(.replyToContent) {
+                        let model = self.model ?? self.context.postModel
+                        guard let model else { return }
+                        ModalService
+                            .shared
+                            .showReplyPostModal(model: model) { _ in
                         }
                     }
-                    
-                }, at: \.tappedThreadLine)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
-                .attach({
-                    editModel()
-                }, at: \.edit)
-                .attach({
-                    let model = self.model ?? self.context.postModel
-                    guard let model else { return }
-                    ModalService
-                        .shared
-                        .showReplyPostModal(model: model) { _ in
-                    }
-                }, at: \.replyToContent)
+                }
                 .padding(padding)
                 .overlayIf(isSelected,
                            overlay: Color.alternateBackground.opacity(0.3))
@@ -233,9 +230,11 @@ extension PostCardView {
                 EmptyView()
             default:
                 FooterView(showScores: config.state.showScores)
-                    .attach({ model in
-                        reply.perform(model)
-                    }, at: \.replyPost)
+                    .onBubble {
+                        On(.replyPost, FederatedPostResource.self) { model in
+                            bubble(.reply, model)
+                        }
+                    }
             }
         }
         .fixedSize(horizontal: false, vertical: context.isPreview ? false : true)
@@ -305,16 +304,18 @@ extension PostCardView {
                 ContentMetadataView(metadata: contentMetadata,
                                     urlToOpen: context.postModel?.postURL,
                                     shouldLoad: context.hasURL)
-                    .attach({
-                        let model = model ?? context.postModel
-                        guard let model,
-                              shouldCensor == false else { return }
-                        ModalService.shared.presentSheet {
-                            PostContentView(postView: model)
-                                .frame(width: Device.isMacOS ? 600 : nil,
-                                       height: Device.isMacOS ? 500 : nil)
+                    .onBubble {
+                        On(.showContent) {
+                            let model = model ?? context.postModel
+                            guard let model,
+                                  shouldCensor == false else { return }
+                            ModalService.shared.presentSheet {
+                                PostContentView(postView: model)
+                                    .frame(width: Device.isMacOS ? 600 : nil,
+                                           height: Device.isMacOS ? 500 : nil)
+                            }
                         }
-                    }, at: \.showContent)
+                    }
                     .frame(maxWidth: Device.isExpandedLayout ? 350 : nil)
                     .padding(.top, .layer2)
                     .padding(.bottom, context.feedStyle == .style3 ? .layer4 : .layer6)

@@ -18,8 +18,7 @@ struct LoomEditView: View {
     
     @State var invalidName: Bool = false
     
-    @GraniteAction<LoomManifest> var edit
-    @GraniteAction<LoomManifest> var remove
+    @Environment(\.graniteBubble) var bubble
     
     var maxHeight: CGFloat? {
         return manifest.data.isEmpty ? 210 : nil
@@ -37,7 +36,7 @@ struct LoomEditView: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    remove.perform(manifest)
+                    bubble(.remove, manifest)
                 } label: {
                     Image(systemName: "trash")
                         .font(.headline.bold())
@@ -60,7 +59,7 @@ struct LoomEditView: View {
                         mutable.remove(community)
                     }
                     
-                    edit.perform(mutable)
+                    bubble(.edit, mutable)
                     
                 } label: {
                     Image(systemName: "sdcard.fill")

@@ -13,15 +13,6 @@ import Granite
 struct HeaderCardContainerView<Content: View>: View {
     @Environment(\.graniteEvent) var interact
     
-    @GraniteAction<Void> var tappedThreadLine
-    @GraniteAction<Void> var longPressThreadLine
-    
-    @GraniteAction<FederatedCommunity> var viewCommunity
-    @GraniteAction<Void> var replyToContent
-    @GraniteAction<Void> var goToThread
-    @GraniteAction<Void> var edit
-    @GraniteAction<Void> var tappedHeader
-    
     var context: ContentContext
     var showAvatar: Bool
     var showThreadLine: Bool
@@ -52,18 +43,11 @@ struct HeaderCardContainerView<Content: View>: View {
                 HeaderCardAvatarView(showAvatar: showAvatar,
                                      showThreadLine: showThreadLine,
                                      shouldCollapse: collapseView)
-                    .attach(tappedThreadLine, at: \.tappedThreadLine)
-                    .attach(longPressThreadLine, at: \.longPressThreadLine)
             }
             
             VStack(alignment: .leading, spacing: context.isPost ? 0 : 2) {
                 HeaderCardView(shouldRoutePost: self.shouldLinkToPost,
                                shouldCollapse: collapseView)
-                    .attach(viewCommunity, at: \.viewCommunity)
-                    .attach(replyToContent, at: \.replyToContent)
-                    .attach(goToThread, at: \.goToThread)
-                    .attach(edit, at: \.edit)
-                    .attach(tappedHeader, at: \.tapped)
                 
                 if !collapseView {
                     content()

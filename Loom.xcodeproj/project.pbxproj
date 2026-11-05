@@ -501,7 +501,9 @@
 		71C7EE2D2A2C82DE00B52090 /* PEXApp.AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C7EE2C2A2C82DE00B52090 /* PEXApp.AppDelegate.swift */; };
 		71C7EE2E2A2C82DE00B52090 /* PEXApp.AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C7EE2C2A2C82DE00B52090 /* PEXApp.AppDelegate.swift */; };
 		71C8BE6E2A7F1C79008694C7 /* View+OnLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE6D2A7F1C79008694C7 /* View+OnLoad.swift */; };
+		B0BB1E000000000000000002 /* GraniteBubble+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BB1E000000000000000001 /* GraniteBubble+Names.swift */; };
 		71C8BE6F2A7F1C79008694C7 /* View+OnLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE6D2A7F1C79008694C7 /* View+OnLoad.swift */; };
+		B0BB1E000000000000000003 /* GraniteBubble+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BB1E000000000000000001 /* GraniteBubble+Names.swift */; };
 		71C8BE722A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */; };
 		71C8BE732A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */; };
 		71C8BE752A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE742A7F2BFA008694C7 /* Pager.LoadingView.swift */; };
@@ -1009,6 +1011,7 @@
 		71C69E562A70DC1400B54AD6 /* SearchScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScrollView.swift; sourceTree = "<group>"; };
 		71C7EE2C2A2C82DE00B52090 /* PEXApp.AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEXApp.AppDelegate.swift; sourceTree = "<group>"; };
 		71C8BE6D2A7F1C79008694C7 /* View+OnLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnLoad.swift"; sourceTree = "<group>"; };
+		B0BB1E000000000000000001 /* GraniteBubble+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraniteBubble+Names.swift"; sourceTree = "<group>"; };
 		71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.ScrollView.swift; sourceTree = "<group>"; };
 		71C8BE742A7F2BFA008694C7 /* Pager.LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.LoadingView.swift; sourceTree = "<group>"; };
 		71C8BE772A7F2E1E008694C7 /* ContentMetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMetadataView.swift; sourceTree = "<group>"; };
@@ -1626,6 +1629,7 @@
 				7161D2FA29540AD00070FE59 /* View+Overlay.swift */,
 				7105407F2A91967200B9DC8A /* MarkdownFontGroup.swift */,
 				71C8BE6D2A7F1C79008694C7 /* View+OnLoad.swift */,
+				B0BB1E000000000000000001 /* GraniteBubble+Names.swift */,
 				712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */,
 				7166E9CB2A744A06004F88D7 /* View+Background.swift */,
 				7145EF0C28D43F1D00BFD19A /* Date.swift */,
@@ -3144,6 +3148,7 @@
 				7103C6042AA16CC800F5C4FE /* StandardTextView.swift in Sources */,
 				71C9F9302A6107D20089D7EA /* HeaderView.swift in Sources */,
 				71C8BE6E2A7F1C79008694C7 /* View+OnLoad.swift in Sources */,
+				B0BB1E000000000000000002 /* GraniteBubble+Names.swift in Sources */,
 				710283AF2A2A54C300010877 /* EnvironmentValues+ValueSliderStyle.swift in Sources */,
 				7151511F2A8F6D0B00251978 /* SideMenu.swift in Sources */,
 				710283A92A2A54C300010877 /* VerticalRangeTrack.swift in Sources */,
@@ -3342,6 +3347,7 @@
 				71B7A1DD2A68E5CA003E6D4D /* LoginView.swift in Sources */,
 				71EB91BE2A8028400091EE5B /* Numbers.swift in Sources */,
 				71C8BE6F2A7F1C79008694C7 /* View+OnLoad.swift in Sources */,
+				B0BB1E000000000000000003 /* GraniteBubble+Names.swift in Sources */,
 				710283922A2A54C300010877 /* VerticalRangeSliderStyle.swift in Sources */,
 				710BEAA32A86E56B0075A141 /* Feed.AccountInfoExpandedView.swift in Sources */,
 				710BEAA92A86E89E0075A141 /* ListingType.swift in Sources */,
@@ -4083,7 +4089,7 @@
 			repositoryURL = "https://github.com/riteshpakala/Granite";
 			requirement = {
 				kind = revision;
-				revision = c67f491044e8ba87a29be5d5f0ec82b259e8303e;
+				revision = 7ff335264bb0dde79913525cba4523e905514fc8;
 			};
 		};
 		71BE94F22A958DA8004A3AC3 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */ = {

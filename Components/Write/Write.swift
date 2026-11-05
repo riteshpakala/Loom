@@ -9,7 +9,7 @@ struct Write: GraniteComponent {
     
     @Relay var modal: ModalService
     
-    @GraniteAction<FederatedPostResource> var updatedPost
+    @Environment(\.graniteBubble) var bubble
     
     @Environment(\.graniteRouter) var router
     
@@ -49,7 +49,7 @@ struct Write: GraniteComponent {
                 if let response = value as? StandardNotificationMeta {
                     ModalService.shared.presentModal(GraniteToastView(response))
                 } else if let meta = value as? Write.Create.ResponseMeta {
-                    updatedPost.perform(meta.postView)
+                    bubble(.updatedPost, meta.postView)
                 }
             }
     }

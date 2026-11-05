@@ -11,7 +11,7 @@ import Granite
 import GraniteUI
 
 struct LogoView: View {
-    @GraniteAction<Void> var write
+    @Environment(\.graniteBubble) var bubble
     
     var body: some View {
         VStack {
@@ -23,7 +23,7 @@ struct LogoView: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    write.perform()
+                    bubble(.write)
                 } label: {
                     Image("logo_small")
                         .resizable()

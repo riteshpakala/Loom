@@ -21,9 +21,7 @@ struct CommentCardView: View {
      */
     var context: ContentContext
     
-    @GraniteAction<FederatedCommunity> var viewCommunity
-    
-    @GraniteAction<FederatedCommentResource> var showDrawer
+    @Environment(\.graniteBubble) var bubble
     
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
@@ -96,15 +94,14 @@ struct CommentCardView: View {
             case .style1:
                 HeaderView(shouldRouteCommunity: shouldRouteCommunity,
                            shouldRoutePost: shouldLinkToPost)
-                    .attach({ community in
-                        viewCommunity.perform(community)
-                    }, at: \.viewCommunity)
-                    .attach({
-                        editModel()
-                    }, at: \.edit)
-                    .attach({
-                        showThreadDrawer(currentModel)
-                    }, at: \.goToThread)
+                    .onBubble {
+                        On(.edit) {
+                            editModel()
+                        }
+                        On(.goToThread) {
+                            showThreadDrawer(currentModel)
+                        }
+                    }
                     .contentContext(.addCommentModel(model: currentModel, context))
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
@@ -123,33 +120,34 @@ struct CommentCardView: View {
                                         collapseView: collapseView) {
                     contentView
                 }
-                .attach({
-                    guard let currentModel,
-                          currentModel.replyCount > 0 else { return }
-                    GraniteHaptic.light.invoke()
-                    expandReplies.toggle()
-                }, at: \.tappedThreadLine)
-                .attach({
-                    guard let currentModel,
-                          currentModel.replyCount > 0 else { return }
-                    GraniteHaptic.light.invoke()
-                    showThreadDrawer(currentModel)
-                }, at: \.longPressThreadLine)
-                .attach(viewCommunity, at: \.viewCommunity)
-                .attach({
-                    replyModel()
-                }, at: \.replyToContent)
-                .attach({
-                    showThreadDrawer(currentModel)
-                }, at: \.goToThread)
-                .attach({
-                    editModel()
-                }, at: \.edit)
-                .attach({
-                    guard context.viewingContext == .postDisplay || context.viewingContext.isThread else { return }
-                    GraniteHaptic.light.invoke()
-                    collapseView.toggle()
-                }, at: \.tappedHeader)
+                .onBubble {
+                    On(.tappedThreadLine) {
+                        guard let currentModel,
+                              currentModel.replyCount > 0 else { return }
+                        GraniteHaptic.light.invoke()
+                        expandReplies.toggle()
+                    }
+                    On(.longPressThreadLine) {
+                        guard let currentModel,
+                              currentModel.replyCount > 0 else { return }
+                        GraniteHaptic.light.invoke()
+                        showThreadDrawer(currentModel)
+                    }
+                    On(.replyToContent) {
+                        replyModel()
+                    }
+                    On(.goToThread) {
+                        showThreadDrawer(currentModel)
+                    }
+                    On(.edit) {
+                        editModel()
+                    }
+                    On(.tappedHeader) {
+                        guard context.viewingContext == .postDisplay || context.viewingContext.isThread else { return }
+                        GraniteHaptic.light.invoke()
+                        collapseView.toggle()
+                    }
+                }
                 .padding(.trailing, padding.trailing)
             }
             
@@ -168,9 +166,11 @@ struct CommentCardView: View {
                                                      context),
                            isModal: false,
                            isInline: true)
-                    .attach({ model in
-                        showThreadDrawer(model)
-                    }, at: \.showDrawer)
+                    .onBubble {
+                        On(.showDrawer, FederatedCommentResource.self) { model in
+                            showThreadDrawer(model)
+                        }
+                    }
                     .id(refreshThread)
             }
         }
@@ -292,9 +292,11 @@ extension CommentCardView {
             }
             
             FooterView(showScores: config.state.showScores)
-                .attachAndClear({ model in
-                    replyModel()
-                }, at: \.replyComment)
+                .onBubble {
+                    On(.replyComment, FederatedCommentResource.self) { model in
+                        replyModel()
+                    }
+                }
                 .contentContext(.addCommentModel(model: currentModel,
                                                  context))
         }
@@ -316,7 +318,7 @@ extension CommentCardView {
                 .showThreadDrawer(commentView: model,
                                   context: context)
         } else if let model {
-            showDrawer.perform(model)
+            bubble(.showDrawer, model)
         }
     }
 }

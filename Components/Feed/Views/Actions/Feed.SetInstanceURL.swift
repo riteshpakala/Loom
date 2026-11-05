@@ -16,16 +16,18 @@ extension Feed {
             //TODO: localize
             GraniteStandardModalView(title: "Set Instance URL", maxHeight: 210) {
                 SetInstanceView()
-                    .attach({ value in
-                        config
-                            .center
-                            .restart
-                            .send(
-                                ConfigService
-                                    .Restart
-                                    .Meta(host: value))
-                        ModalService.shared.dismissSheet()
-                    }, at: \.commit)
+                    .onBubble {
+                        On(.commit, String.self) { value in
+                            config
+                                .center
+                                .restart
+                                .send(
+                                    ConfigService
+                                        .Restart
+                                        .Meta(host: value))
+                            ModalService.shared.dismissSheet()
+                        }
+                    }
             }
         }
     }

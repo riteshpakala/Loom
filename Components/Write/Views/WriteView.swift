@@ -142,9 +142,11 @@ extension WriteView {
 #if os(iOS)
                 TextToolView(text: $content,
                              visibility: $isVisible)
-                .attach({ state in
-                    self.isFocused = state
-                }, at: \.isFocused)
+                .onBubble {
+                    On(.isFocused, Bool.self) { state in
+                        self.isFocused = state
+                    }
+                }
                 .padding(.horizontal, .layer3)
                 .padding(.top, .layer2)
                 .overlayIf(content.isEmpty && isFocused == false) {

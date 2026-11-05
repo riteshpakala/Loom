@@ -17,47 +17,53 @@ extension Feed {
                           communityView: state.communityView,
                           location: state.location,
                           peerLocation: state.peerLocation)
-            .attach( { modalView in
-                #if os(iOS)
-                ModalService.shared.present(modalView)
-                #else
-                ModalService.shared.presentModal(modalView)
-                #endif
-            }, at: \.present)
-            .attach( { meta in
-                config
-                    .center
-                    .restart
-                    .send(ConfigService
-                        .Restart
-                        .Meta(accountMeta: meta))
-                
-                DispatchQueue.main.async {
-                    ModalService.shared.dismissAll()
+            .onBubble {
+                On(.present, AnyGraniteModal.self) { modalView in
+                    #if os(iOS)
+                    ModalService.shared.present(modalView)
+                    #else
+                    ModalService.shared.presentModal(modalView)
+                    #endif
                 }
-            }, at: \.switchAccount)
-            .attach({
-                ModalService.shared.presentSheet(detents: [.medium, .large]) {
-                    LoginView(addToProfiles: true)
-                        .attach({
-                            ModalService.shared.dismissSheet()
-                        }, at: \.cancel)
+                On(.switchAccount, AccountMeta.self) { meta in
+                    config
+                        .center
+                        .restart
+                        .send(ConfigService
+                            .Restart
+                            .Meta(accountMeta: meta))
+
+                    DispatchQueue.main.async {
+                        ModalService.shared.dismissAll()
+                    }
                 }
-            }, at: \.addProfile)
-            .attach({
-                GraniteHaptic.light.invoke()
-                ModalService.shared.presentSheet(detents: [.medium, .large]) {
-                    LoginView()
-                        .attach({
-                            ModalService.shared.dismissSheet()
-                        }, at: \.cancel)
+                On(.addProfile) {
+                    ModalService.shared.presentSheet(detents: [.medium, .large]) {
+                        LoginView(addToProfiles: true)
+                            .onBubble {
+                                On(.cancel) {
+                                    ModalService.shared.dismissSheet()
+                                }
+                            }
+                    }
                 }
-            }, at: \.login)
-            .attach({ location in
-                fetchCommunity(state.community,
-                               location: location,
-                               reset: true)
-            }, at: \.changeLocation)
+                On(.login) {
+                    GraniteHaptic.light.invoke()
+                    ModalService.shared.presentSheet(detents: [.medium, .large]) {
+                        LoginView()
+                            .onBubble {
+                                On(.cancel) {
+                                    ModalService.shared.dismissSheet()
+                                }
+                            }
+                    }
+                }
+                On(.changeLocation, FederatedLocationType.self) { location in
+                    fetchCommunity(state.community,
+                                   location: location,
+                                   reset: true)
+                }
+            }
             .id(account.state.meta)
             .padding(.top, headerPaddingTop)
     }
@@ -72,16 +78,12 @@ struct FeedHamburgerView: View {
     
     @Environment(\.sideMenuVisible) var isVisible
     
-    @GraniteAction<AnyGraniteModal> var present
-    @GraniteAction<AccountMeta> var switchAccount
-    @GraniteAction<Void> var addProfile
-    @GraniteAction<Void> var login
+    @Environment(\.graniteBubble) var bubble
     
     @Relay var account: AccountService
     @Relay var config: ConfigService
     
     //ExpandedView Only
-    @GraniteAction<FederatedLocationType> var changeLocation
     
     //Conditional views
     @State var loomsIsActive: Bool = false
@@ -135,10 +137,12 @@ struct FeedHamburgerView: View {
                 
                 if Device.isExpandedLayout {
                     AccountView()
-                        .attach({
-                            GraniteHaptic.light.invoke()
-                            login.perform()
-                        }, at: \.login)
+                        .onBubble {
+                            On(.login) {
+                                GraniteHaptic.light.invoke()
+                                bubble(.login)
+                            }
+                        }
                         .offset(y: hasCommunityBanner ? -1 : 0)
                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
@@ -155,21 +159,23 @@ struct FeedHamburgerView: View {
                                               communityView: communityView,
                                               location: location,
                                               peerLocation: peerLocation)
-                    .attach({ interact in
-                        if account.isLoggedIn {
-                            account
-                                .center
-                                .interact
-                                .send(AccountService.Interact.Meta(intent: interact))
-                        } else {
-                            ModalService.shared.presentSheet {
-                                LoginView()
+                    .onBubble {
+                        // The menu's location picks were never routed from the hamburger;
+                        // stop them here so they can't reach the hamburger's own route.
+                        On(.changeLocation, FederatedLocationType.self) { _ in }
+                        On(.interact, AccountService.Interact.Intent.self) { interact in
+                            if account.isLoggedIn {
+                                account
+                                    .center
+                                    .interact
+                                    .send(AccountService.Interact.Meta(intent: interact))
+                            } else {
+                                ModalService.shared.presentSheet {
+                                    LoginView()
+                                }
                             }
                         }
-                    }, at: \.interact)
-                    .attach({ location in
-                        changeLocation.perform(location)
-                    }, at: \.changeLocation)
+                    }
                 } else {
                     switchAccountMenu
                 }
@@ -252,8 +258,7 @@ extension FeedHamburgerView {
             Button {
                 GraniteHaptic.light.invoke()
                 
-                present
-                    .perform(GraniteAlertView(mode: .sheet) {
+                bubble(.present, GraniteAlertView(mode: .sheet) {
                     
                         if account.state.profiles.isNotEmpty {
                             GraniteAlertAction {
@@ -266,11 +271,13 @@ extension FeedHamburgerView {
                                                      isSelected: profile.person.isMe,
                                                      canRemoveFromProfiles: true,
                                                      style: .style2)
-                                        .attach({
-                                            guard profile.person.isMe == false else { return }
-                                            GraniteHaptic.light.invoke()
-                                            switchAccount.perform(profile)
-                                        }, at: \.tapped)
+                                        .onBubble {
+                                            On(.tapped) {
+                                                guard profile.person.isMe == false else { return }
+                                                GraniteHaptic.light.invoke()
+                                                bubble(.switchAccount, profile)
+                                            }
+                                        }
                                         .graniteEvent(account.center.interact)
                                         .padding(.horizontal, .layer4)
                                         
@@ -284,11 +291,11 @@ extension FeedHamburgerView {
                         
                         //TODO: Localize
                         GraniteAlertAction(title: "Add Account") {
-                            addProfile.perform()
+                            bubble(.addProfile)
                         }
                         
                         GraniteAlertAction(title: "MISC_CANCEL")
-                })
+                } as AnyGraniteModal)
             } label: {
                 //TODO: localize
                 Text("Switch Account")
@@ -309,7 +316,7 @@ extension FeedHamburgerView {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    login.perform()
+                    bubble(.login)
                 } label: {
                     Text("AUTH_LOGIN")
                 }
@@ -405,7 +412,7 @@ extension FeedHamburgerView {
             HStack {
                 Button {
                     GraniteHaptic.light.invoke()
-                    login.perform()
+                    bubble(.login)
                 } label: {
                     Image(systemName: "globe")
                         .font(.title3)
@@ -487,16 +494,18 @@ extension FeedHamburgerView {
                         //TODO: localize
                         GraniteStandardModalView(title: "Set Instance URL", maxHeight: 210) {
                             SetInstanceView()
-                                .attach({ value in
-                                    config
-                                        .center
-                                        .restart
-                                        .send(
-                                            ConfigService
-                                                .Restart
-                                                .Meta(host: value))
-                                    ModalService.shared.dismissSheet()
-                                }, at: \.commit)
+                                .onBubble {
+                                    On(.commit, String.self) { value in
+                                        config
+                                            .center
+                                            .restart
+                                            .send(
+                                                ConfigService
+                                                    .Restart
+                                                    .Meta(host: value))
+                                        ModalService.shared.dismissSheet()
+                                    }
+                                }
                         }
                     }
                 } label : {

@@ -25,10 +25,12 @@ extension Profile {
             }
             
             ProfilePickerView(kind: _state.viewingDataType, isMe: state.person?.isMe == true)
-                .attach( {
-                    pager.clear()
-                    pager.fetch(force: true)
-                }, at: \.refresh)
+                .onBubble {
+                    On(.refresh) {
+                        pager.clear()
+                        pager.fetch(force: true)
+                    }
+                }
         }
         .background(Color.background)
     }

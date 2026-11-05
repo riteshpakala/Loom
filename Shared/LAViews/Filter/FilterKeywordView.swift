@@ -12,8 +12,7 @@ import SwiftUI
 import FederationKit
 
 struct FilterKeywordView: View {
-    @GraniteAction<FilterConfig.Keyword> var save
-    @GraniteAction<FilterConfig.Keyword> var remove
+    @Environment(\.graniteBubble) var bubble
     
     var keywordToEdit: FilterConfig.Keyword? = nil
     var isEditing: Bool {
@@ -41,7 +40,7 @@ struct FilterKeywordView: View {
                 if isEditing, let keyword = keywordToEdit {
                     Button {
                         GraniteHaptic.light.invoke()
-                        remove.perform(keyword)
+                        bubble(.remove, keyword)
                     } label: {
                         Image(systemName: "trash")
                             .font(.headline.bold())
@@ -51,7 +50,7 @@ struct FilterKeywordView: View {
                     Button {
                         GraniteHaptic.light.invoke()
                         let keyword: FilterConfig.Keyword = .init(value: self.keyword, attributes: generateAttributes())
-                        save.perform(keyword)
+                        bubble(.save, keyword)
                     } label: {
                         Image(systemName: "sdcard.fill")
                             .font(.title3)
@@ -62,7 +61,7 @@ struct FilterKeywordView: View {
                         
                         let keyword: FilterConfig.Keyword = .init(value: self.keyword, attributes: generateAttributes())
                         
-                        save.perform(keyword)
+                        bubble(.save, keyword)
                     } label: {
                         Image(systemName: "checkmark")
                             .font(.title3)

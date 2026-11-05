@@ -12,11 +12,7 @@ import SwiftUI
 import FederationKit
 
 struct PostActionsView: View {
-    @GraniteAction<FederatedCommunity> var viewCommunity
-    @GraniteAction<Void> var goToPost
-    @GraniteAction<Void> var goToThread
-    @GraniteAction<Void> var edit
-    @GraniteAction<Void> var replyToContent
+    @Environment(\.graniteBubble) var bubble
     //A view needs updating outside of this view's potential hierarchy
     @Environment(\.graniteEvent) var accountInteract
     
@@ -171,7 +167,7 @@ extension PostActionsView {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    edit.perform()
+                    bubble(.edit)
                 } label: {
                     Text("MISC_EDIT")
                     Image(systemName: "pencil.and.outline")
@@ -182,7 +178,7 @@ extension PostActionsView {
             if context.isPreview == false {
                 Button {
                     GraniteHaptic.light.invoke()
-                    replyToContent.perform()
+                    bubble(.replyToContent)
                 } label: {
                     //TODO: localize
                     Text("Reply")
@@ -204,7 +200,7 @@ extension PostActionsView {
                     
                     if Device.isExpandedLayout {
                         
-                        viewCommunity.perform(community)
+                        bubble(.viewCommunity, community)
                     } else {
                         router.push {
                             Feed(community)
@@ -221,7 +217,7 @@ extension PostActionsView {
             if shouldRouteToPost && !context.viewingContext.isThread {
                 Button {
                     GraniteHaptic.light.invoke()
-                    goToPost.perform()
+                    bubble(.goToPost)
                 } label: {
                     Text("POST_ACTIONS_GO_TO_POST")
                     Image(systemName: "arrow.right.circle")
@@ -232,7 +228,7 @@ extension PostActionsView {
             if context.isComment {
                 Button {
                     GraniteHaptic.light.invoke()
-                    goToThread.perform()
+                    bubble(.goToThread)
                 } label: {
                     //TODO: localize
                     Text("Go to thread")

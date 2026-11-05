@@ -58,21 +58,23 @@ extension ModalService {
         
         presentSheet(detents: [.medium, .large]) {
             Write(postView: model)
-                .attachAndClear({ updatedModel in
-                    update?(updatedModel)
-                    
-                    self.dismissSheet()
-                    
-                    //TODO: localize
-                    ModalService
-                        .shared
-                        .presentModal(
-                            GraniteToastView(
-                                StandardNotificationMeta(
-                                    title: "MISC_SUCCESS",
-                                    message: "Post edited",
-                                    event: .success)))
-                }, at: \.updatedPost)
+                .onBubble {
+                    On(.updatedPost, FederatedPostResource.self) { updatedModel in
+                        update?(updatedModel)
+
+                        self.dismissSheet()
+
+                        //TODO: localize
+                        ModalService
+                            .shared
+                            .presentModal(
+                                GraniteToastView(
+                                    StandardNotificationMeta(
+                                        title: "MISC_SUCCESS",
+                                        message: "Post edited",
+                                        event: .success)))
+                    }
+                }
                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
         }
     }
@@ -96,20 +98,22 @@ extension ModalService {
         
         presentSheet {
             Reply(kind: editKind)
-                .attachAndClear({ (updatedModel, replyModel) in
-                    update?(updatedModel)
-                    self.dismissSheet()
-                    
-                    //TODO: localize
-                    ModalService
-                        .shared
-                        .presentModal(
-                            GraniteToastView(
-                                StandardNotificationMeta(
-                                    title: "MISC_SUCCESS",
-                                    message: "Comment edited",
-                                    event: .success)))
-                }, at: \.updateComment)
+                .onBubble {
+                    On(.updateComment, (FederatedCommentResource, FederatedCommentResource?).self) { (updatedModel, replyModel) in
+                        update?(updatedModel)
+                        self.dismissSheet()
+
+                        //TODO: localize
+                        ModalService
+                            .shared
+                            .presentModal(
+                                GraniteToastView(
+                                    StandardNotificationMeta(
+                                        title: "MISC_SUCCESS",
+                                        message: "Comment edited",
+                                        event: .success)))
+                    }
+                }
                 .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
         }
     }
@@ -127,22 +131,24 @@ extension ModalService {
         
         presentSheet {
             Reply(kind: .replyPost(model))
-                .attachAndClear({ (model, modelView) in
-                    update?(modelView)
-                    
-                    ModalService
-                        .shared
-                        .presentModal(
-                            GraniteToastView(
-                            StandardNotificationMeta(title: "MISC_SUCCESS",
-                                                     message: "ALERT_COMMENT_SUCCESS",
-                                                     event: .success)
+                .onBubble {
+                    On(.updatePost, (FederatedComment, FederatedCommentResource).self) { (model, modelView) in
+                        update?(modelView)
+
+                        ModalService
+                            .shared
+                            .presentModal(
+                                GraniteToastView(
+                                StandardNotificationMeta(title: "MISC_SUCCESS",
+                                                         message: "ALERT_COMMENT_SUCCESS",
+                                                         event: .success)
+                                )
                             )
-                        )
-                    
-                    ModalService.shared.dismissSheet()
-                    
-                }, at: \.updatePost)
+
+                        ModalService.shared.dismissSheet()
+
+                    }
+                }
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
     }
@@ -156,19 +162,21 @@ extension ModalService {
         
         presentSheet {
             Reply(kind: .replyComment(model))
-                .attachAndClear({ (updatedModel, replyModel) in
-                    update?(updatedModel, replyModel)
-                    
-                    ModalService.shared.dismissSheet()
-                    
-                    ModalService
-                        .shared
-                        .presentModal(
-                            GraniteToastView(
-                                StandardNotificationMeta(title: "MISC_SUCCESS",
-                                                         message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)",
-                                                         event: .success)))
-                }, at: \.updateComment)
+                .onBubble {
+                    On(.updateComment, (FederatedCommentResource, FederatedCommentResource?).self) { (updatedModel, replyModel) in
+                        update?(updatedModel, replyModel)
+
+                        ModalService.shared.dismissSheet()
+
+                        ModalService
+                            .shared
+                            .presentModal(
+                                GraniteToastView(
+                                    StandardNotificationMeta(title: "MISC_SUCCESS",
+                                                             message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)",
+                                                             event: .success)))
+                    }
+                }
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
     }
@@ -218,9 +226,11 @@ extension ModalService {
                                                  context)
                                 .withStyle(.style2)
                                 .viewedIn(.thread(context.location)))
-                .attach({
-                    ModalService.shared.dismissSheet()
-                }, at: \.closeDrawer)
+                .onBubble {
+                    On(.closeDrawer) {
+                        ModalService.shared.dismissSheet()
+                    }
+                }
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
     }

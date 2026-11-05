@@ -13,10 +13,6 @@ import GraniteUI
 struct LoomCollectionsView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @GraniteAction<LoomManifest> var toggle
-    @GraniteAction<LoomManifest> var edit
-    @GraniteAction<LoomManifest> var add
-    
     @Relay var service: LoomService
     
     var manifests: [LoomManifest] {
@@ -39,11 +35,11 @@ struct LoomCollectionsView: View {
                         ForEach(manifests) { manifest in
                             LoomCardView(isActive: manifest == service.center.state.activeManifest,
                                          manifest: manifest)
-                            .attach({ manifest in
-                                service.center.modify.send(LoomService.Modify.Intent.toggle(manifest))
-                            }, at: \.toggle)
-                            .attach(edit, at: \.edit)
-                            .attach(add, at: \.add)
+                            .onBubble {
+                                On(.toggle, LoomManifest.self) { manifest in
+                                    service.center.modify.send(LoomService.Modify.Intent.toggle(manifest))
+                                }
+                            }
                             .id(manifest)
                             .opacity(intent.isAdding ? 0.7 : 1.0)
                             .allowsHitTesting(intent.isAdding == false)

@@ -14,8 +14,7 @@ import FederationKit
 struct HeaderCardAvatarView: View {
     @Environment(\.contentContext) var context
     
-    @GraniteAction<Void> var tappedThreadLine
-    @GraniteAction<Void> var longPressThreadLine
+    @Environment(\.graniteBubble) var bubble
     
     var postView: FederatedPostResource? {
         context.postModel
@@ -114,9 +113,9 @@ struct HeaderCardAvatarView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .modifier(TapAndLongPressModifier(tapAction: {
-                            tappedThreadLine.perform()
+                            bubble(.tappedThreadLine)
                         }, longPressAction: {
-                            longPressThreadLine.perform()
+                            bubble(.longPressThreadLine)
                         }))
                     }
                 } else {

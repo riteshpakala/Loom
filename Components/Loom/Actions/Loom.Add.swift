@@ -36,12 +36,14 @@ extension Loom {
             
             ModalService.shared.presentSheet {
                 CommunityPickerView()
-                    .attach({ (communityView, _) in
-                        GraniteHaptic.light.invoke()
-                        
-                        service.center.modify.send(LoomService.Modify.Intent.add(communityView, manifest))
-                        
-                    }, at: \.pickedCommunity)
+                    .onBubble {
+                        On(.pickedCommunity, (FederatedCommunityResource, FederatedData?).self) { (communityView, _) in
+                            GraniteHaptic.light.invoke()
+
+                            service.center.modify.send(LoomService.Modify.Intent.add(communityView, manifest))
+
+                        }
+                    }
                     .frame(width: Device.isMacOS ? 400 : nil, height: Device.isMacOS ? 400 : nil)
             }
         }

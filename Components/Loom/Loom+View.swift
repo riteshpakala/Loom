@@ -60,12 +60,14 @@ extension Loom: View {
                                     
                                     ModalService.shared.presentSheet {
                                         LoomCreateView(communityView: communityView)
-                                            .attach({ name in
-                                                service.center.modify.send(LoomService.Modify.Intent.create(name, nil))
-                                                DispatchQueue.main.async {
-                                                    ModalService.shared.dismissSheet()
+                                            .onBubble {
+                                                On(.create, String.self) { name in
+                                                    service.center.modify.send(LoomService.Modify.Intent.create(name, nil))
+                                                    DispatchQueue.main.async {
+                                                        ModalService.shared.dismissSheet()
+                                                    }
                                                 }
-                                            }, at: \.create)
+                                            }
                                     }
                                     
                                 } label: {
@@ -86,22 +88,26 @@ extension Loom: View {
                 switch state.viewOption {
                 case .looms:
                     LoomCollectionsView()
-                        .attach({ manifest in
-                            addToLoom(manifest)
-                        }, at: \.add)
-                        .attach({ model in
-                            ModalService.shared.presentSheet {
-                                LoomEditView(manifest: model)
-                                    .attach({ manifest in
-                                        service.center.modify.send(LoomService.Modify.Intent.removeManifest(manifest))
-                                        ModalService.shared.dismissSheet()
-                                    }, at: \.remove)
-                                    .attach({ manifest in
-                                        service.center.modify.send(LoomService.Modify.Intent.update(manifest))
-                                        ModalService.shared.dismissSheet()
-                                    }, at: \.edit)
+                        .onBubble {
+                            On(.add, LoomManifest.self) { manifest in
+                                addToLoom(manifest)
                             }
-                        }, at: \.edit)
+                            On(.edit, LoomManifest.self) { model in
+                                ModalService.shared.presentSheet {
+                                    LoomEditView(manifest: model)
+                                        .onBubble {
+                                            On(.remove, LoomManifest.self) { manifest in
+                                                service.center.modify.send(LoomService.Modify.Intent.removeManifest(manifest))
+                                                ModalService.shared.dismissSheet()
+                                            }
+                                            On(.edit, LoomManifest.self) { manifest in
+                                                service.center.modify.send(LoomService.Modify.Intent.update(manifest))
+                                                ModalService.shared.dismissSheet()
+                                            }
+                                        }
+                                }
+                            }
+                        }
                 case .communities:
                     CommunityPickerView(modal: false, shouldRoute: true, verticalPadding: 0)
                 }

@@ -25,8 +25,7 @@ class InstanceDetailsCache {
 struct InstanceCardView: View {
     @Environment(\.graniteEvent) var restart
     
-    @GraniteAction<FederatedInstance> var connect
-    @GraniteAction<FederatedInstance> var favorite
+    @Environment(\.graniteBubble) var bubble
     
     @State var metadata: FederationMetadata?
     @State var ping: TimeInterval? = nil
@@ -144,7 +143,7 @@ struct InstanceCardView: View {
                 Button {
                     guard isConnected == false else { return }
                     GraniteHaptic.light.invoke()
-                    connect.perform(instance)
+                    bubble(.connect, instance)
                     restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: host))
                 } label: {
                     if isConnected {
@@ -168,7 +167,7 @@ struct InstanceCardView: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    favorite.perform(instance)
+                    bubble(.favorite, instance)
                 } label: {
                     Image(systemName: "star\(isFavorite ? ".fill" : "")")
                         .foregroundColor(isFavorite ? Brand.Colors.yellow : .foreground)

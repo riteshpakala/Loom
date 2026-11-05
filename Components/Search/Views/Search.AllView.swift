@@ -14,7 +14,6 @@ import FederationKit
 struct SearchAllView: View {
     @Environment(\.graniteRouter) var router
     
-    @GraniteAction<FederatedCommentResource> var showDrawer
     var model: FederatedSearchResult
     
     @Relay var account: AccountService

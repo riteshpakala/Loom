@@ -15,7 +15,7 @@ struct UserCardView: View {
     @Environment(\.graniteEvent) var interact
     
     //To register menu touches effectively
-    @GraniteAction<Void> var tapped
+    @Environment(\.graniteBubble) var bubble
     
     var model: FederatedPersonResource
     var meta: AccountMeta?
@@ -172,7 +172,7 @@ struct UserCardView: View {
                     
                     Spacer()
                 }.onTapGesture {
-                    tapped.perform()
+                    bubble(.tapped)
                 }
                 
                 CardActionsView(enableCommunityRoute: .constant(false),

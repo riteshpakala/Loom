@@ -11,9 +11,7 @@ import Granite
 import GraniteUI
 
 struct LoomCardView: View {
-    @GraniteAction<LoomManifest> var toggle
-    @GraniteAction<LoomManifest> var edit
-    @GraniteAction<LoomManifest> var add
+    @Environment(\.graniteBubble) var bubble
     
     var isActive: Bool = false
     var manifest: LoomManifest
@@ -71,7 +69,7 @@ struct LoomCardView: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    toggle.perform(manifest)
+                    bubble(.toggle, manifest)
                 } label: {
                     Image(systemName: "rectangle.\(isActive ? "righthalf" : "lefthalf").inset.filled")
                         .font(.title)
@@ -91,7 +89,7 @@ struct LoomCardView: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    edit.perform(manifest)
+                    bubble(.edit, manifest)
                 } label: {
                     Image(systemName: "slider.horizontal.3")
                         .font(.headline)
@@ -101,7 +99,7 @@ struct LoomCardView: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    add.perform(manifest)
+                    bubble(.add, manifest)
                 } label: {
                     Image(systemName: "plus")
                         .font(.headline)

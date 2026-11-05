@@ -13,8 +13,7 @@ import Foundation
 struct AccountView: View {
     @Environment(\.graniteRouter) var router
     
-    @GraniteAction<Void> var login
-    @GraniteAction<Void> var notLoggedIn
+    @Environment(\.graniteBubble) var bubble
     
     @Relay var account: AccountService
     
@@ -35,7 +34,7 @@ struct AccountView: View {
                     .shiny()
             } else {
                 Button {
-                    login.perform()
+                    bubble(.login)
                 } label: {
                     Text("AUTH_LOGIN")
                         .font(.headline)

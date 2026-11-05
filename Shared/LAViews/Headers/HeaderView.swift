@@ -38,11 +38,7 @@ struct HeaderView: View {
     
     @Relay var layout: LayoutService
     
-    @GraniteAction<FederatedCommunity> var viewCommunity
-    @GraniteAction<String> var tappedDetail
-    @GraniteAction<String> var tappedCrumb
-    @GraniteAction<Void> var edit
-    @GraniteAction<Void> var goToThread
+    @Environment(\.graniteBubble) var bubble
     
     @State var postView: FederatedPostResource? = nil
     
@@ -191,12 +187,11 @@ extension HeaderView {
                                     postView: shouldRoutePost ? context.postModel : nil,
                                     person: context.person,
                                     bookmarkKind: context.bookmarkKind)
-                    .attach(viewCommunity, at: \.viewCommunity)
-                    .attach({
-                        self.fetchFederatedPostResource()
-                    }, at: \.goToPost)
-                    .attach(goToThread, at: \.goToThread)
-                    .attach(edit, at: \.edit)
+                    .onBubble {
+                        On(.goToPost) {
+                            self.fetchFederatedPostResource()
+                        }
+                    }
                 }
             }
         }
@@ -226,7 +221,7 @@ extension HeaderView {
                                 }
                                 
                                 GraniteHaptic.light.invoke()
-                                tappedCrumb.perform(crumb.0)
+                                bubble(.tappedCrumb, crumb.0)
                             }
                         }
                         
@@ -245,7 +240,7 @@ extension HeaderView {
                                 return
                             }
                             GraniteHaptic.light.invoke()
-                            tappedCrumb.perform(id)
+                            bubble(.tappedCrumb, id)
                         }
                     }
                 }
@@ -293,18 +288,11 @@ extension HeaderView {
                                 postView: shouldRoutePost ? context.postModel : nil,
                                 person: context.person,
                                 bookmarkKind: context.bookmarkKind)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
-                .attach({
-                    self.fetchFederatedPostResource()
-                }, at: \.goToPost)
-                .attach({
-                    goToThread.perform()
-                }, at: \.goToThread)
-                .attach({
-                    edit.perform()
-                }, at: \.edit)
+                .onBubble {
+                    On(.goToPost) {
+                        self.fetchFederatedPostResource()
+                    }
+                }
             }
         }
         .frame(minHeight: AvatarView.Size.small.frame)

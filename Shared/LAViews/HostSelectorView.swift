@@ -13,7 +13,7 @@ import FederationKit
 
 struct HostSelectorView: View {
     @Environment(\.contentContext) var context
-    @GraniteAction<Void> var fetch
+    @Environment(\.graniteBubble) var bubble
     
     @Binding var location: FederatedLocationType
     
@@ -49,7 +49,7 @@ struct HostSelectorView: View {
                         self.location = .base
                     }
                     
-                    fetch.perform()
+                    bubble(.fetch)
                 } label: {
                     Text(viewableHosts[index])
                     Image(systemName: imageName)

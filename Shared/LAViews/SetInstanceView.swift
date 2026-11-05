@@ -11,7 +11,7 @@ import Granite
 import GraniteUI
 
 struct SetInstanceView: View {
-    @GraniteAction<String> var commit
+    @Environment(\.graniteBubble) var bubble
     
     @State var value: String = ""
     
@@ -68,7 +68,7 @@ struct SetInstanceView: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    commit.perform(value)
+                    bubble(.commit, value)
                 } label: {
                     Text("MISC_DONE")
                         .font(.headline)

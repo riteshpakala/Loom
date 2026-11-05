@@ -17,7 +17,7 @@ struct LoomCreateView: View {
     @State var name: String = ""
     @State var invalidName: Bool = false
     
-    @GraniteAction<String> var create
+    @Environment(\.graniteBubble) var bubble
     
     var body: some View {
         //TODO: localize
@@ -36,7 +36,7 @@ struct LoomCreateView: View {
                         invalidName = true
                         return
                     }
-                    create.perform(trimmed)
+                    bubble(.create, trimmed)
                 } label: {
                     Image(systemName: "checkmark")
                         .font(.title3)

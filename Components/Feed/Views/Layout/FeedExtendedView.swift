@@ -11,7 +11,6 @@ import SwiftUI
 import FederationKit
 
 struct FeedExtendedView: View {
-    @GraniteAction<FederatedCommunity> var viewCommunity
     @Relay var layout: LayoutService
     
     let location: FederatedLocationType
@@ -36,9 +35,6 @@ struct FeedExtendedView: View {
                 case .viewPost(let model):
                     Divider()
                     PostDisplayView()
-                        .attach({ community in
-                            viewCommunity.perform(community)
-                        }, at: \.viewCommunity)
                         .contentContext(.init(postModel: model))
                         .id(model.id)
                 default:

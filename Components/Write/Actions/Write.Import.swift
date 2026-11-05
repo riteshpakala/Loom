@@ -59,15 +59,16 @@ extension Write {
         modal.presentSheet(id: Write.modalId,
                            detents: [.large]) {
             ImagePicker(imageData: _state.imageData)
-                .attach( {
-                    modal.dismissSheet(id: Write.modalId)
-                }, at: \.dismiss)
+                .onBubble {
+                    On(.dismiss) {
+                        modal.dismissSheet(id: Write.modalId)
+                    }
+                }
         }
     }
 }
 //TODO: move
-struct ImagePicker: UIViewControllerRepresentable, GraniteActionable {
-    @GraniteAction<Void> var dismiss
+struct ImagePicker: UIViewControllerRepresentable {
     @Binding var imageData: Data?
     
     func makeUIViewController(context: Context) -> PHPickerViewController {
@@ -75,11 +76,12 @@ struct ImagePicker: UIViewControllerRepresentable, GraniteActionable {
         config.filter = .images
         let picker = PHPickerViewController(configuration: config)
         picker.delegate = context.coordinator
+        context.coordinator.bubble = context.environment.graniteBubble
         return picker
     }
     
     func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {
-        
+        context.coordinator.bubble = context.environment.graniteBubble
     }
     
     func makeCoordinator() -> Coordinator {
@@ -88,6 +90,7 @@ struct ImagePicker: UIViewControllerRepresentable, GraniteActionable {
     
     class Coordinator: NSObject, PHPickerViewControllerDelegate {
         let parent: ImagePicker
+        var bubble = GraniteBubble()
         
         init(_ parent: ImagePicker) {
             self.parent = parent
@@ -106,7 +109,7 @@ struct ImagePicker: UIViewControllerRepresentable, GraniteActionable {
                     DispatchQueue.main.async { [weak self] in
                         self?.parent.imageData = (image as? UIImage)?.compress().png
                         
-                        self?.parent.dismiss.perform()
+                        self?.bubble(.dismiss)
                     }
                 }
             } else {

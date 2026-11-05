@@ -13,10 +13,7 @@ struct ThreadView: View {
     
     var context: ContentContext
     
-    @GraniteAction<Void> var closeDrawer
-    @GraniteAction<FederatedCommentResource> var showDrawer
-    @GraniteAction<(FederatedCommentResource, ((FederatedCommentResource) -> Void))> var reply
-    @GraniteAction<(FederatedCommentResource, ((FederatedCommentResource) -> Void))> var edit
+    @Environment(\.graniteBubble) var bubble
     
     @State var updatedParentModel: FederatedCommentResource?
     
@@ -42,9 +39,11 @@ struct ThreadView: View {
         VStack(alignment: .leading, spacing: 0) {
             if isModal {
                 HeaderView(crumbs: breadCrumbs.reversed())
-                    .attach({ id in
-                        viewReplies(id)
-                    }, at: \.tappedCrumb)
+                    .onBubble {
+                        On(.tappedCrumb, String.self) { id in
+                            viewReplies(id)
+                        }
+                    }
                     .contentContext(context)
                     .padding(.horizontal, .layer3)
                     .padding(.bottom, .layer3)
@@ -57,9 +56,11 @@ struct ThreadView: View {
                 Divider()
                 
                 ListingSelectorView(listingType: $listingType)
-                    .attach({
-                        pager.reset()
-                    }, at: \.fetch)
+                    .onBubble {
+                        On(.fetch) {
+                            pager.reset()
+                        }
+                    }
                     //nitpick
                     .offset(x: (Device.isExpandedLayout) ? -2 : 0, y: 0)
                     .fixedSize(horizontal: false, vertical: true)
@@ -74,17 +75,22 @@ struct ThreadView: View {
                                                           context).withStyle(.style2),
                                 parentModel: currentModel,
                                 isInline: isInline)
-                    .attach({ model in
-                        if isModal {
-                            breadCrumbs.append(model)
-                            pager.reset()
-                        } else {
-                            ModalService
-                                .shared
-                                .showThreadDrawer(commentView: model,
-                                                  context: context)
+                    .onBubble {
+                        On(.showDrawer, FederatedCommentResource.self) { model in
+                            if isModal {
+                                breadCrumbs.append(model)
+                                pager.reset()
+                            } else {
+                                ModalService
+                                    .shared
+                                    .showThreadDrawer(commentView: model,
+                                                      context: context)
+                            }
                         }
-                    }, at: \.showDrawer)
+                        // Replies inside a thread never routed a community tap; stop it here
+                        // so it can't reach a feed's route above the thread.
+                        On(.viewCommunity, FederatedCommunity.self) { _ in }
+                    }
                     .graniteEvent(interact)
             }
             .environmentObject(pager)
@@ -131,7 +137,7 @@ extension ThreadView {
                 .modifier(TapAndLongPressModifier(tapAction: {
                 }, longPressAction: {
                     GraniteHaptic.light.invoke()
-                    closeDrawer.perform()
+                    bubble(.closeDrawer)
                 }))
                 .padding(.bottom, .layer5)
             #else
@@ -143,22 +149,26 @@ extension ThreadView {
             FooterView(isHeader: true,
                        showScores: config.state.showScores,
                        isComposable: true)
-            .attach({ model in
-                router.push(style: .customTrailing(Color.background)) {
-                    Reply(kind: .replyComment(model), isPushed: true)
-                        .attach({ (updatedModel, replyModel) in
-                            ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
-                            
-                            DispatchQueue.main.async {
-                                self.updatedParentModel = (updatedParentModel ?? model)?.incrementReplyCount()
-                                
-                                self.pager.insert(model)
-                                
-                                self.router.pop()
+            .onBubble {
+                On(.replyComment, FederatedCommentResource.self) { model in
+                    router.push(style: .customTrailing(Color.background)) {
+                        Reply(kind: .replyComment(model), isPushed: true)
+                            .onBubble {
+                                On(.updateComment, (FederatedCommentResource, FederatedCommentResource?).self) { (updatedModel, replyModel) in
+                                    ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
+
+                                    DispatchQueue.main.async {
+                                        self.updatedParentModel = (updatedParentModel ?? model)?.incrementReplyCount()
+
+                                        self.pager.insert(model)
+
+                                        self.router.pop()
+                                    }
+                                }
                             }
-                        }, at: \.updateComment)
+                    }
                 }
-            }, at: \.replyComment)
+            }
             .contentContext(.addCommentModel(model: currentModel, context))
         }
         .fixedSize(horizontal: false, vertical: true)
@@ -180,9 +190,11 @@ extension ThreadView {
         HStack(spacing: .layer4) {
             HostSelectorView(location: $threadLocation,
                              model: currentModel)
-            .attach({
-                pager.reset()
-            }, at: \.fetch)
+            .onBubble {
+                On(.fetch) {
+                    pager.reset()
+                }
+            }
             
             Spacer()
         }

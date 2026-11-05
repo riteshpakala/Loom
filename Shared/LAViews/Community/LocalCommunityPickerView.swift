@@ -13,7 +13,7 @@ import FederationKit
 
 struct LocalCommunityPreview: View {
     @Environment(\.graniteRouter) var router
-    @GraniteAction<FederatedCommunityResource> var pickedCommunity
+    @Environment(\.graniteBubble) var bubble
     
     let url: String
     var client: Federation {
@@ -63,7 +63,7 @@ struct LocalCommunityPreview: View {
                             CommunitySidebarCardView(model: communityView,
                                                      fullWidth: true)
                             .onTapGesture {
-                                pickedCommunity.perform(communityView)
+                                bubble(.pickedCommunity, communityView)
                             }
                             .padding(.leading, .layer3)
                             .padding(.trailing, .layer3)
@@ -73,7 +73,7 @@ struct LocalCommunityPreview: View {
                                               shouldRoute: modal == false,
                                               fullWidth: true)
                             .onTapGesture {
-                                pickedCommunity.perform(communityView)
+                                bubble(.pickedCommunity, communityView)
                             }
                             .padding(.leading, .layer3)
                             .padding(.trailing, .layer3)

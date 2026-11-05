@@ -13,10 +13,6 @@ import Granite
 import GraniteUI
 
 struct TextToolView : GenericControllerRepresentable {
-    @GraniteAction<Void> var onSubmit
-    @GraniteAction<Bool> var isFocused
-    @GraniteAction<Void> var toggleVisibility
-    
     @Binding var text: String
     @Binding var visibility: Bool
     
@@ -49,11 +45,13 @@ struct TextToolView : GenericControllerRepresentable {
         controller.textView.delegate = context.coordinator
         controller.delegate = context.coordinator
         context.coordinator.delegate = controller
+        context.coordinator.bubble = context.environment.graniteBubble
         return controller
     }
     
     func updateUIViewController(_ uiViewController: KeyboardViewController,
                                 context: Context) {
+        context.coordinator.bubble = context.environment.graniteBubble
         if uiViewController.textView.text.isEmpty && text.isNotEmpty {
             DispatchQueue.main.async {
                 uiViewController.textView.insertText(text)
@@ -73,6 +71,7 @@ struct TextToolView : GenericControllerRepresentable {
     
     class Coordinator: NSObject, UITextViewDelegate, KeyboardTextToolDelegate {
         var parent: TextToolView
+        var bubble = GraniteBubble()
         weak var delegate: KeyboardTextToolControllerDelegate?
         
         @Binding var text: String
@@ -98,7 +97,7 @@ struct TextToolView : GenericControllerRepresentable {
             case .writing:
                 return true
             default:
-                parent.onSubmit.perform()
+                bubble(.onSubmit)
                 textView.resignFirstResponder()
             }
             
@@ -107,17 +106,17 @@ struct TextToolView : GenericControllerRepresentable {
         
         func textViewDidEndEditing(_ textView: UITextView) {
             delegate?.setPlaceholderVisibility(text.isEmpty)
-            parent.isFocused.perform(false)
+            bubble(.isFocused, false)
         }
         
         func textViewDidBeginEditing(_ textView: UITextView) {
-            parent.isFocused.perform(true)
+            bubble(.isFocused, true)
             
         }
         
         //KeyboardTextToolDelegate
         func commitAction() {
-            parent.onSubmit.perform()
+            bubble(.onSubmit)
         }
         
         func toggleVisibility() {

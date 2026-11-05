@@ -11,7 +11,7 @@ import Granite
 import GraniteUI
 
 struct FilterKeywordCollectionView: View {
-    @GraniteAction<FilterConfig.Keyword?> var addKeyword
+    @Environment(\.graniteBubble) var bubble
     
     var config: FilterConfig
     
@@ -20,7 +20,7 @@ struct FilterKeywordCollectionView: View {
             HStack(spacing: .layer4) {
                 Button {
                     GraniteHaptic.light.invoke()
-                    addKeyword.perform(nil)
+                    bubble(.addKeyword, nil as FilterConfig.Keyword?)
                 } label: {
                     Image(systemName: "plus")
                         .font(.footnote.bold())
@@ -39,7 +39,7 @@ struct FilterKeywordCollectionView: View {
                 ForEach(config.keywords) { keyword in
                     Button {
                         GraniteHaptic.light.invoke()
-                        addKeyword.perform(keyword)
+                        bubble(.addKeyword, keyword as FilterConfig.Keyword?)
                     } label: {
                         Text(keyword.value)
                             .font(.headline)

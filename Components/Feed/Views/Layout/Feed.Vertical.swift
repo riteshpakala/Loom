@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
+import FederationKit
 
 extension Feed {
     var verticalLayout: some View {
@@ -18,16 +19,20 @@ extension Feed {
                          feedStyle: config.state.feedStyle) {
                 headerView
             }
-             .attach({ community in
-                 fetchCommunity(community, reset: true)
-             }, at: \.viewCommunity)
+             .onBubble {
+                 On(.viewCommunity, FederatedCommunity.self) { community in
+                     fetchCommunity(community, reset: true)
+                 }
+             }
              .graniteEvent(account.center.interact)
              .overlay(LogoView()
-                .attach({
-                    ModalService
-                        .shared
-                        .showWriteModal(state.communityView)
-                }, at: \.write))
+                .onBubble {
+                    On(.write) {
+                        ModalService
+                            .shared
+                            .showWriteModal(state.communityView)
+                    }
+                })
              .environmentObject(pager)
         }
         .edgesIgnoringSafeArea(edgesToIgnore)

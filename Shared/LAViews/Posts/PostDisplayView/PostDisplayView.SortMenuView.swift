@@ -37,13 +37,17 @@ extension PostDisplayView {
             
 //            HostSelectorView(location: $threadLocation,
 //                             model: currentModel)
-//            .attach({
-//                pager.reset()
-//            }, at: \.fetch)
+//            .onBubble {
+//                On(.fetch) {
+//                    pager.reset()
+//                }
+//            }
             ListingSelectorView(listingType: $listingType)
-                .attach({
-                    pager.reset()
-                }, at: \.fetch)
+                .onBubble {
+                    On(.fetch) {
+                        pager.reset()
+                    }
+                }
             
             Spacer()
         }

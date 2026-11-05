@@ -11,7 +11,6 @@ import Granite
 import FederationKit
 
 struct FeedSidebar<Content: View>: View {
-    @GraniteAction<(FederatedCommunityResource, FederatedData?)> var pickedCommunity
     
     let header: () -> Content
     init(@ViewBuilder header: @escaping (() -> Content) = { EmptyView() }) {
@@ -25,9 +24,6 @@ struct FeedSidebar<Content: View>: View {
                                 shouldRoute: true,
                                 verticalPadding: 0,
                                 sidebar: true)
-            .attach({ (model, federatedData) in
-                pickedCommunity.perform((model, federatedData))
-            }, at: \.pickedCommunity)
         }
     }
 }

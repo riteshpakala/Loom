@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Granite
+import FederationKit
 import GraniteUI
 
 
@@ -33,34 +34,42 @@ extension Feed {
                 headerView
             }
             //TODO: the sidebar will hold looms, use fed data too
-            .attach({ (model, federatedData) in
-                DispatchQueue.main.async {
-                    self._state.community.wrappedValue = model.community
-                    self._state.communityView.wrappedValue = model
-                    self.pager.reset()
+            .onBubble {
+                On(.pickedCommunity, (FederatedCommunityResource, FederatedData?).self) { (model, federatedData) in
+                    DispatchQueue.main.async {
+                        self._state.community.wrappedValue = model.community
+                        self._state.communityView.wrappedValue = model
+                        self.pager.reset()
+                    }
                 }
-            }, at: \.pickedCommunity)
+            }
             .frame(width: 300)
             Divider()
             FeedMainView(location: state.location,
                          communityView: state.communityView,
                          feedStyle: config.state.feedStyle)
-                .attach({ community in
-                    fetchCommunity(community, reset: true)
-                }, at: \.viewCommunity)
+                .onBubble {
+                    On(.viewCommunity, FederatedCommunity.self) { community in
+                        fetchCommunity(community, reset: true)
+                    }
+                }
                 .graniteEvent(account.center.interact)
                 .overlay(LogoView()
-                    .attach({
-                        ModalService
-                            .shared
-                            .showWriteModal(state.communityView)
-                    }, at: \.write))
+                    .onBubble {
+                        On(.write) {
+                            ModalService
+                                .shared
+                                .showWriteModal(state.communityView)
+                        }
+                    })
                 .environmentObject(pager)
                 .frame(minWidth: minFrameWidth, maxWidth: nil)
             FeedExtendedView(location: state.location)
-                .attach({ community in
-                    fetchCommunity(community, reset: true)
-                }, at: \.viewCommunity)
+                .onBubble {
+                    On(.viewCommunity, FederatedCommunity.self) { community in
+                        fetchCommunity(community, reset: true)
+                    }
+                }
         }
     }
 }

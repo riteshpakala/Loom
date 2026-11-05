@@ -12,8 +12,7 @@ import SwiftUI
 import Combine
 
 struct SearchBar: View {
-    @GraniteAction<String> var query
-    @GraniteAction<Void> var clean
+    @Environment(\.graniteBubble) var bubble
     
     @Binding var lastQuery: String
     
@@ -44,12 +43,14 @@ struct SearchBar: View {
                         #if os(iOS)
                         TextToolView(text: $textDebouncer.text,
                                      kind: .search)
-                            .attach({
-                                #if os(iOS)
-                                guard textDebouncer.text != lastQuery else { return }
-                                query.perform(textDebouncer.text)
-                                #endif
-                            }, at: \.onSubmit)
+                            .onBubble {
+                                On(.onSubmit) {
+                                    #if os(iOS)
+                                    guard textDebouncer.text != lastQuery else { return }
+                                    bubble(.query, textDebouncer.text)
+                                    #endif
+                                }
+                            }
                             .frame(height: 48)
                             .padding(.top, .layer1)
                         #else
@@ -65,7 +66,7 @@ struct SearchBar: View {
                             hideKeyboard()
                             guard textDebouncer.text != lastQuery else { return }
                             isSearching = true
-                            query.perform(textDebouncer.text)
+                            bubble(.query, textDebouncer.text)
                             #endif
                         }
                         #endif
@@ -80,7 +81,7 @@ struct SearchBar: View {
                     if offline == false {
                         self.isSearching = true
                     }
-                    query.perform(value)
+                    bubble(.query, value)
                 }
                 #endif
                 
@@ -129,7 +130,7 @@ struct SearchBar: View {
     
     func resetView() {
         UIApplication.hideKeyboard()
-        clean.perform()
+        bubble(.clean)
     }
 }
 struct StandardLoadingView: View {
@@ -148,7 +149,7 @@ struct StandardLoadingView: View {
 }
 
 struct StandardSearchToolbarView: View {
-    @GraniteAction<Void> var search
+    @Environment(\.graniteBubble) var bubble
     
     var body: some View {
         Group {
@@ -173,7 +174,7 @@ struct StandardSearchToolbarView: View {
             
             Button {
                 GraniteHaptic.light.invoke()
-                search.perform()
+                bubble(.search)
             } label : {
                 Text("MISC_SEARCH")
                     .font(.headline.bold())

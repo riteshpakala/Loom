@@ -18,8 +18,6 @@ struct PostDisplayView: GraniteNavigationDestination {
     @Environment(\.contentContext) var context
     @Environment(\.graniteNavigationShowingKey) var hasShown
     
-    @GraniteAction<FederatedCommunity> var viewCommunity
-    
     @Relay(.silence) var account: AccountService
     @Relay var config: ConfigService
     
@@ -76,9 +74,6 @@ struct PostDisplayView: GraniteNavigationDestination {
                             .viewedIn(.postDisplay)
                             .updateLocation(threadLocation)
                             .withStyle(.style2))
-                        .attach({ community in
-                            viewCommunity.perform(community)
-                        }, at: \.viewCommunity)
                         .graniteEvent(account.center.interact)
                         .background(Color.alternateBackground)
                 }
@@ -132,16 +127,15 @@ struct PostDisplayView: GraniteNavigationDestination {
 extension PostDisplayView {
     var headerView: some View {
         HeaderView(shouldRoutePost: false)
-            .attach({ community in
-                viewCommunity.perform(community)
-            }, at: \.viewCommunity)
-            .attach({
-                ModalService.shared.showEditPostModal(currentModel) { updatedModel in
-                    DispatchQueue.main.async {
-                        self.updatedModel = updatedModel
+            .onBubble {
+                On(.edit) {
+                    ModalService.shared.showEditPostModal(currentModel) { updatedModel in
+                        DispatchQueue.main.async {
+                            self.updatedModel = updatedModel
+                        }
                     }
                 }
-            }, at: \.edit)
+            }
             .contentContext(
                 .addPostModel(model: updatedModel, context)
                 .withStyle(context.feedStyle == .style3 ? .style2 : context.feedStyle))
@@ -169,13 +163,15 @@ extension PostDisplayView {
                        showScores: config.state.showScores,
                        isComposable: true,
                        shouldLinkToPost: false)
-                .attach({ model in
-                    ModalService
-                        .shared
-                        .showReplyPostModal(model: model) { commentView in
-                        pager.insert(commentView)
+                .onBubble {
+                    On(.replyPost, FederatedPostResource.self) { model in
+                        ModalService
+                            .shared
+                            .showReplyPostModal(model: model) { commentView in
+                            pager.insert(commentView)
+                        }
                     }
-                }, at: \.replyPost)
+                }
                 .contentContext(.addPostModel(model: updatedModel, context).withStyle(.style1))
                 .padding(.horizontal, .layer4)
                 .padding(.top, currentModel?.hasContent == true ? .layer5 : .layer2)
