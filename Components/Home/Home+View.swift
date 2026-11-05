@@ -108,7 +108,6 @@ extension Home: View {
 //            } icon: {
 //                GraniteTabIcon(name: "globe.americas", larger: Device.isExpandedLayout == false)
 //            }
-            
             if Device.isExpandedLayout {
                 GraniteTab(split: Device.isExpandedLayout,
                            last: true) {
