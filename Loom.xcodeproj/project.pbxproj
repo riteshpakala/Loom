@@ -4089,7 +4089,7 @@
 			repositoryURL = "https://github.com/riteshpakala/Granite";
 			requirement = {
 				kind = revision;
-				revision = 7ff335264bb0dde79913525cba4523e905514fc8;
+				revision = 37c762ba0e18a043c5cffbd1cd7f14d3aada3c5a;
 			};
 		};
 		71BE94F22A958DA8004A3AC3 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */ = {
