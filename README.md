@@ -7,10 +7,10 @@
 >
 > It is kept self-contained so it builds on its own, always: every package it depends on is vendored in [`Packages/`](Packages), except Granite and a few public libraries, which are pinned to exact revisions.
 
-<p align="center"><img src="Resources/README/loom-bloom.svg" width="100%" alt="A concentrated beam, Loom and Granite built solo, enters a reactor labelled Apple, Inc. and blooms into a spectrum: AI safety, social app safety, iOS architecture, on-device ML, core research, Rao Studios and 2026 Year in Review." /></p>
+<p align="center"><img src="Resources/README/loom-bloom.svg" width="100%" alt="A concentrated beam, Loom and Granite built solo, enters a reactor labelled 2024–2026 and blooms into a spectrum: AI safety, social app safety, iOS architecture, on-device ML, core research, Rao Studios and 2026 Year in Review." /></p>
 
 > [!NOTE]
-> **The beam before the bloom.** Building Loom and Granite solo, design included, was the experience that focused my interests in iOS architecture, AI safety and social app safety, and sharpened CoreML, on-device ML, app architecture, iOS application performance, engineering, design and project management. Joining Apple, Inc. was the reactor: it exploded into [2026 Year in Review](https://riteshpakala.github.io/French-Visa-Application/), [Rao Studios](https://rao.nyc) and my [core research](https://paka.la/blog#core-research).
+> **The beam before the bloom.** Building Loom and Granite solo, design included, was the experience that focused my interests in iOS architecture, AI safety and social app safety, and sharpened CoreML, on-device ML, app architecture, iOS application performance, engineering, design and project management. 2024–2026 was the reactor: corporate experience let me align my radar for the first time, so every one of those signals pointed the same way. From there the beam bloomed into [2026 Year in Review](https://riteshpakala.github.io/French-Visa-Application/), [Rao Studios](https://rao.nyc) and my [core research](https://paka.la/blog#core-research).
 
 <p align="center"><img src="Resources/README/header.gif" width="90%" /></p>
 

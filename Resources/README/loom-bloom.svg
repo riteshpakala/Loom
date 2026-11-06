@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" width="1200" height="460" role="img" aria-labelledby="t d">
 <title id="t">Loom and Granite: a concentrated beam blooming into a spectrum</title>
-<desc id="d">A thin white beam labelled Loom and Granite, built solo, travels into a prism labelled Apple, Inc. and blooms into seven colored rays: AI safety, social app safety, iOS architecture, on-device ML, core research, Rao Studios and 2026 Year in Review.</desc>
+<desc id="d">A thin white beam labelled Loom and Granite, built solo, travels into a prism labelled 2024–2026 and blooms into seven colored rays: AI safety, social app safety, iOS architecture, on-device ML, core research, Rao Studios and 2026 Year in Review.</desc>
 <defs>
 <radialGradient id="bg" cx="47%" cy="50%" r="75%"><stop offset="0" stop-color="#141826"/><stop offset="0.55" stop-color="#0a0c14"/><stop offset="1" stop-color="#05060a"/></radialGradient>
 <linearGradient id="beam" x1="0" x2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0"/><stop offset="0.35" stop-color="#cfe3ff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
@@ -481,7 +481,7 @@
 <text x="70" y="204" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="3.2" fill="#ffffff" fill-opacity="0.92">LOOM + GRANITE</text>
 <text x="70" y="264" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#aab4cc" fill-opacity="0.85">Built solo · design · iOS architecture · safety</text>
 <text x="70" y="284" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#aab4cc" fill-opacity="0.85">on-device ML · iOS application performance</text>
-<text x="570" y="342" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" letter-spacing="2.6" fill="#ffffff" fill-opacity="0.8">APPLE, INC.</text>
+<text x="570" y="342" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" letter-spacing="2.6" fill="#ffffff" fill-opacity="0.8">2024–2026</text>
 </g>
 <rect x="0.5" y="0.5" width="1199" height="459" rx="28" fill="none" stroke="#ffffff" stroke-opacity="0.08"/>
 </svg>
